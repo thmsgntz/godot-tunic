@@ -20,6 +20,8 @@ run/size/viewport_height=648
 
 window/size/viewport_width=1600
 window/size/viewport_height=1200
+window/size/initial_position_type=2
+window/stretch/mode="viewport"
 
 [filesystem]
 

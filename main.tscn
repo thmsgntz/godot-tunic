@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://2t7v68cgmcsi"]
+[gd_scene load_steps=15 format=3 uid="uid://2t7v68cgmcsi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_djwls"]
 [ext_resource type="Texture2D" uid="uid://dj0d1ayfqcp2o" path="res://materials/FoliageGrass-B.png" id="1_krqqn"]
 [ext_resource type="Texture2D" uid="uid://bb6uy7lvxosaq" path="res://materials/SurfaceStone-B.png" id="2_7irc1"]
 [ext_resource type="PackedScene" uid="uid://d0h3mto0h7tn3" path="res://player.tscn" id="3_wxgjr"]
+[ext_resource type="PackedScene" uid="uid://c6cixkwiyf8mk" path="res://zombie.tscn" id="5_p163k"]
+[ext_resource type="Script" path="res://zombie.gd" id="6_koudk"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_2nf3f"]
 radius = 15.0
@@ -29,6 +31,15 @@ cap_bottom = false
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_sx5ra"]
 height = 10.0
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_rx1dm"]
+vertices = PackedVector3Array(-14.25, 0.473017, 3.75, -12.25, 0.473017, 8.25, -8.25, 0.473017, 12.25, 3.75, 0.473017, 14.25, 8.25, 0.473017, 12.25, 12.25, 0.473017, 8.25, 14.25, 0.473017, -3.75, 12.25, 0.473017, -8.25, 8.25, 0.473017, -12.25, 2.5, 0.473017, -14.5, -3.75, 0.473017, -14.25, -3.75, 0.473017, -14.25, -8.25, 0.473017, -12.25, -12.25, 0.473017, -8.25, -14.5, 0.473017, -2.5, -14.25, 0.473017, 3.75, -8.25, 0.473017, 12.25, -2.5, 0.473017, 14.5, 3.75, 0.473017, 14.25, 12.25, 0.473017, 8.25, 14.5, 0.473017, 2.5, 14.25, 0.473017, -3.75, 14.25, 0.473017, -3.75, -3.75, 0.473017, -14.25, -14.25, 0.473017, 3.75, -8.25, 0.473017, 12.25, 3.75, 0.473017, 14.25, 12.25, 0.473017, 8.25)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(5, 4, 3), PackedInt32Array(7, 6, 8), PackedInt32Array(8, 6, 9), PackedInt32Array(9, 6, 10), PackedInt32Array(12, 11, 13), PackedInt32Array(13, 11, 14), PackedInt32Array(14, 11, 15), PackedInt32Array(16, 18, 17), PackedInt32Array(19, 21, 20), PackedInt32Array(27, 26, 22), PackedInt32Array(22, 26, 25), PackedInt32Array(22, 25, 24), PackedInt32Array(22, 24, 23)]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lbwl1"]
+top_radius = 15.0
+bottom_radius = 15.0
+height = 0.02
 
 [node name="Main" type="Node"]
 script = ExtResource("1_djwls")
@@ -105,6 +116,22 @@ mesh = SubResource("CylinderMesh_vt6xd")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Obstacles/Pilier4"]
 shape = SubResource("CylinderShape3D_sx5ra")
 
+[node name="Zombie" parent="." instance=ExtResource("5_p163k")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, -2.06546)
+script = ExtResource("6_koudk")
+path_distance = 2.0
+movement_speed = 0.5
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Zombie"]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.484102, 0)
+navigation_mesh = SubResource("NavigationMesh_rx1dm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0169828, 0)
+mesh = SubResource("CylinderMesh_lbwl1")
+
 [node name="Player" parent="." instance=ExtResource("3_wxgjr")]
 
-[node name="Mobs" type="Node3D" parent="."]
+[node name="Marker3D" type="Marker3D" parent="Player"]
