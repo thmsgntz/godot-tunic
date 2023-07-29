@@ -119,7 +119,6 @@ shape = SubResource("CylinderShape3D_sx5ra")
 [node name="Zombie" parent="." instance=ExtResource("5_p163k")]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, -2.06546)
 script = ExtResource("6_koudk")
-path_distance = 2.0
 movement_speed = 0.5
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="Zombie"]
