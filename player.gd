@@ -63,15 +63,18 @@ func _physics_process(delta: float) -> void:
 	
 	
 func attack() -> void:
-	print("Attack button pressed!")
+	# print("Attack button pressed!")
 	
 	match animation_player.current_animation:
 		"punch_1":
-			print("Punch_1!")
+			pass 
+			# print("Punch_1!")
 		"punch_2":
-			print("Punch_2!")
+			pass 
+			# print("Punch_2!")
 		"punch_3":
-			print("Punch_3!")
+			pass 
+			# print("Punch_3!")
 		_:
 			printerr("Should not be here with ", animation_player.current_animation)
 	

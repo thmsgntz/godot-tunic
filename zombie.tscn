@@ -1,6 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c6cixkwiyf8mk"]
+[gd_scene load_steps=10 format=3 uid="uid://c6cixkwiyf8mk"]
 
 [ext_resource type="PackedScene" uid="uid://cscffhelujudl" path="res://models_3D/zombie/zombie_all_animations.gltf" id="1_nt3u5"]
+[ext_resource type="Script" path="res://zombie.gd" id="1_qt6aj"]
+[ext_resource type="Script" path="res://custom_nodes/hurt_box_3D.gd" id="3_nbceb"]
 
 [sub_resource type="Animation" id="Animation_88h26"]
 resource_name = "idle"
@@ -2354,14 +2356,20 @@ _data = {
 "walk": SubResource("Animation_g0ofc")
 }
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5rxgg"]
+
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_kidmu"]
 height = 1.6807
 radius = 0.312292
 
-[node name="Zombie" type="CharacterBody3D"]
+[node name="Zombie" type="CharacterBody3D" groups=["zombies"]]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
+collision_layer = 2
+collision_mask = 15
+script = ExtResource("1_qt6aj")
 
 [node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="zombie_all_animations" parent="Pivot" instance=ExtResource("1_nt3u5")]
 
@@ -2484,11 +2492,26 @@ libraries = {
 "": SubResource("AnimationLibrary_enpeo")
 }
 
+[node name="HurtBox3D" type="Area3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("3_nbceb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/HurtBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0619455, 1.00846, 0.120769)
+shape = SubResource("CylinderShape3D_5rxgg")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.961838, 0.0978127)
 shape = SubResource("CylinderShape3D_kidmu")
 
 [node name="TimerAttack" type="Timer" parent="."]
 wait_time = 2.0
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
+height = 2.01
+radius = 1.01
+debug_enabled = true
+debug_path_custom_color = Color(1, 0, 1, 1)
 
 [editable path="Pivot/zombie_all_animations"]

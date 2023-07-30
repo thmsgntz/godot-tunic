@@ -1,11 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://2t7v68cgmcsi"]
+[gd_scene load_steps=14 format=3 uid="uid://2t7v68cgmcsi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_djwls"]
 [ext_resource type="Texture2D" uid="uid://dj0d1ayfqcp2o" path="res://materials/FoliageGrass-B.png" id="1_krqqn"]
 [ext_resource type="Texture2D" uid="uid://bb6uy7lvxosaq" path="res://materials/SurfaceStone-B.png" id="2_7irc1"]
 [ext_resource type="PackedScene" uid="uid://d0h3mto0h7tn3" path="res://player.tscn" id="3_wxgjr"]
 [ext_resource type="PackedScene" uid="uid://c6cixkwiyf8mk" path="res://zombie.tscn" id="5_p163k"]
-[ext_resource type="Script" path="res://zombie.gd" id="6_koudk"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_2nf3f"]
 radius = 15.0
@@ -43,6 +42,7 @@ height = 0.02
 
 [node name="Main" type="Node"]
 script = ExtResource("1_djwls")
+zombie_scene = ExtResource("5_p163k")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.858074, -0.0868593, -0.506127, 0.513526, 0.145137, 0.84571, -3.55504e-09, -0.985592, 0.169143, 0, 12.4428, 0)
@@ -62,6 +62,8 @@ size = 11.0
 
 [node name="Ground" type="StaticBody3D" parent="Arena"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+collision_layer = 4
+collision_mask = 0
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
@@ -78,6 +80,8 @@ metadata/_edit_lock_ = true
 
 [node name="Pilier" type="StaticBody3D" parent="Arena/Obstacles"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 6.5)
+collision_layer = 8
+collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
@@ -88,6 +92,8 @@ shape = SubResource("CylinderShape3D_sx5ra")
 
 [node name="Pilier2" type="StaticBody3D" parent="Arena/Obstacles"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -6.5)
+collision_layer = 8
+collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
@@ -98,6 +104,8 @@ shape = SubResource("CylinderShape3D_sx5ra")
 
 [node name="Pilier3" type="StaticBody3D" parent="Arena/Obstacles"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 6.5)
+collision_layer = 8
+collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
@@ -108,6 +116,8 @@ shape = SubResource("CylinderShape3D_sx5ra")
 
 [node name="Pilier4" type="StaticBody3D" parent="Arena/Obstacles"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, -6.5)
+collision_layer = 8
+collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
@@ -115,13 +125,6 @@ mesh = SubResource("CylinderMesh_vt6xd")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Obstacles/Pilier4"]
 shape = SubResource("CylinderShape3D_sx5ra")
-
-[node name="Zombie" parent="." instance=ExtResource("5_p163k")]
-transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, -2.06546)
-script = ExtResource("6_koudk")
-movement_speed = 0.5
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Zombie"]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.484102, 0)
@@ -132,5 +135,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0169828, 0)
 mesh = SubResource("CylinderMesh_lbwl1")
 
 [node name="Player" parent="." instance=ExtResource("3_wxgjr")]
-
-[node name="Marker3D" type="Marker3D" parent="Player"]
