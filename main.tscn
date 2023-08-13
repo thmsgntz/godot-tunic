@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dj0d1ayfqcp2o" path="res://materials/FoliageGrass-B.png" id="1_krqqn"]
 [ext_resource type="Texture2D" uid="uid://bb6uy7lvxosaq" path="res://materials/SurfaceStone-B.png" id="2_7irc1"]
 [ext_resource type="PackedScene" uid="uid://d0h3mto0h7tn3" path="res://player.tscn" id="3_wxgjr"]
-[ext_resource type="PackedScene" uid="uid://c6cixkwiyf8mk" path="res://zombie.tscn" id="5_p163k"]
+[ext_resource type="PackedScene" uid="uid://b34rt0x5masod" path="res://zombie.tscn" id="5_p163k"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_2nf3f"]
 radius = 15.0

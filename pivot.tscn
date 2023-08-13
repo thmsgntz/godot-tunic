@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://7qghvxnsw2yp"]
+
+[ext_resource type="PackedScene" uid="uid://b17y25yfl8fg" path="res://models_3D/weapons/sword.gltf" id="1_8j7cn"]
+
+[node name="Pivot" type="Node3D"]
+
+[node name="sword" parent="." instance=ExtResource("1_8j7cn")]

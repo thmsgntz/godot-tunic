@@ -19,15 +19,50 @@ const JUMP_VELOCITY = 4.5
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
-var animation_player: AnimationPlayer
+@onready var animation_player: AnimationPlayer = $Pivot/dwarf_with_sword_animations/AnimationPlayer
 
-enum AnimationNames {IDLE, WALK, RUN, JUMP, PUNCH_1, PUNCH_2, PUNCH_3}
+enum AnimationNames {
+	IDLE, 
+	WALK, 
+	WALK_FORWARD_SWORD, 
+	WALK_BACKWARD_SWORD, 
+	RUN_FORWARD_SWORD,
+	RUN_BACKWARD_SWORD,
+	RUN_NO_SWORD, 
+	STRAFE_LEFT, 
+	STRAFE_RIGHT, 
+	JUMP, 
+	SIMPLE_ATTACK_1, 
+	SIMPLE_ATTACK_2, 
+	SLASH_HORIZONTALLY, 
+	PUNCH_1, 
+	PUNCH_2, 
+	PUNCH_3
+}
 enum ActionState {NOTHING, ATTACK}
+
+const DICT_ANIMATIONS: Dictionary = {
+	AnimationNames.IDLE: "idle",
+	AnimationNames.WALK: "walk_no_sword",
+	AnimationNames.WALK_FORWARD_SWORD: "Walk_forward_sword",
+	AnimationNames.WALK_BACKWARD_SWORD: "walk_backward_sword",
+	AnimationNames.RUN_FORWARD_SWORD: "run_sword",
+	AnimationNames.RUN_BACKWARD_SWORD: "run_backward_sword",
+	AnimationNames.RUN_NO_SWORD: "run_no_sword", 
+	AnimationNames.STRAFE_LEFT: "Strafe_left",
+	AnimationNames.STRAFE_RIGHT: "Strafe_right",
+	AnimationNames.SIMPLE_ATTACK_1: "Simple_Attack_1",
+	AnimationNames.SIMPLE_ATTACK_2: "Simple_Attack_2",
+	AnimationNames.SLASH_HORIZONTALLY: "slash_horizontally",
+	AnimationNames.PUNCH_1: "punch_1",
+	AnimationNames.PUNCH_2: "punch_2",
+	AnimationNames.PUNCH_3: "punch_3",
+	
+}
 
 var player_state: ActionState
 
 func _ready() -> void:
-	animation_player = $Pivot/dwark_all_animations/AnimationPlayer
 	play_animation(AnimationNames.IDLE)
 	player_state = ActionState.NOTHING
 
@@ -76,40 +111,19 @@ func attack() -> void:
 			pass 
 			# print("Punch_3!")
 		_:
-			printerr("Should not be here with ", animation_player.current_animation)
+			pass
+#			printerr("Should not be here with ", animation_player.current_animation)
 	
-	play_animation(AnimationNames.PUNCH_1, 0.0, PUNCH_SPEED)
+	play_animation(AnimationNames.SIMPLE_ATTACK_1, 0.0, PUNCH_SPEED)
 	
 
 
 func play_animation(animation_name: AnimationNames, custom_blend: float = ANIMATION_BLEND, custom_speed: float = 1.0) -> void:
 	var animation_to_play = "idle"
 	
-	match animation_name:
-		AnimationNames.IDLE:
-			animation_to_play = "idle"
-		
-		AnimationNames.WALK:
-			animation_to_play = "walk"
-			
-		AnimationNames.RUN:
-			animation_to_play = "run"
-			
-		AnimationNames.JUMP:
-			animation_to_play = "jump"
-		
-		AnimationNames.PUNCH_1:
-			animation_to_play = "punch_1"
-			
-		AnimationNames.PUNCH_2:
-			animation_to_play = "punch_2"
-			
-		AnimationNames.PUNCH_3:
-			animation_to_play = "punch_3"
-			
-		_:
-			printerr("This animation does not exist! => ", animation_name)
-			animation_to_play = "idle"
+	animation_to_play = DICT_ANIMATIONS.get(animation_name, null)
+	if animation_to_play == null:
+		printerr("Animation non reconnue : '", animation_to_play, "'. Playing idle.")
 			
 	animation_player.play(animation_to_play, custom_blend, custom_speed)
 
@@ -122,11 +136,11 @@ func move_if_input_requested() -> void:
 	
 	if direction:
 		var speed = WALK_SPEED
-		var animation = AnimationNames.WALK
+		var animation = AnimationNames.WALK_FORWARD_SWORD
 		
 		if Input.is_action_pressed("shift"):
 			speed = RUN_SPEED
-			animation = AnimationNames.RUN
+			animation = AnimationNames.RUN_FORWARD_SWORD
 			
 			
 		velocity.x = direction.x * speed

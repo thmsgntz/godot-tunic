@@ -7,8 +7,14 @@ extends CharacterBody3D
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var target_node: CharacterBody3D 
-@onready var animation_player: AnimationPlayer = $Pivot/zombie_all_animations/AnimationPlayer
+@onready var animation_player: AnimationPlayer = $Pivot/zombie_all_animations_with_death/AnimationPlayer
+@onready var mesh: MeshInstance3D = $Pivot/zombie_all_animations_with_death/Armature/Skeleton3D/Yaku_zombie
 @onready var timer_attack: Timer = $TimerAttack
+
+@onready var collision_shape: CollisionShape3D = $CollisionShape3D
+@onready var collision_hurtbox: CollisionShape3D = $Pivot/HurtBox3D/CollisionShape3D
+
+@onready var blink_node = $Blink
 
 const WAIT_TIME_ATTACK: float = 4.0
 const WAIT_BEFORE_ATTACK: float = 1.0
@@ -18,10 +24,23 @@ enum ActionState {NOTHING, ATTACK}
 
 var zombie_state: ActionState
 
+var barre_de_vie = 10
+var is_dead: bool = false
 
 func take_damage(_damage_taken: int) -> void:
-	# print(self, "::take_damage = I receive ", damage_taken, " damage!")
-	queue_free()
+	barre_de_vie = barre_de_vie - 4
+	
+	if barre_de_vie <=  0:
+		var animation_death = "zombie_death_" + str(randi_range(1, 4))
+		animation_player.play(animation_death)
+		is_dead = true
+		collision_shape.set_deferred("disabled", true)
+		collision_hurtbox.set_deferred("disabled", true)
+		set_physics_process(false)
+		#queue_free()
+	else:
+		if blink_node:
+			blink_node.blink()
 
 
 ## Met à jours le NavigationAgend3D, l'état à ActionState.Nothing
@@ -47,7 +66,9 @@ func initialize(target_node_to_follow: CharacterBody3D) -> void:
 
 ## Logique du zombie
 func _physics_process(_delta):
-	
+	if is_dead:
+		return 
+		
 	# Si la target n'est pas assigned
 	if target_node == null:
 		play_animation(AnimationNames.IDLE, 1.0)

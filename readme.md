@@ -27,3 +27,6 @@ Exporter le fichier en glTF embedded et l'importer dans Godot.
   - Mixamo : mixamo.com/
   - Sketchfab
   - itch.io
+
+Sword : 
+  - https://sketchfab.com/3d-models/moonbrand-early-14th-c-arming-sword-80fa91fc8c974fd0acd2a55cc513edec

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://2pegvisve484"]
+
+[ext_resource type="Script" path="res://blink_scene.gd" id="1_fgep7"]
+
+[node name="Blink" type="Node3D"]
+script = ExtResource("1_fgep7")
+
+[node name="BlinkTimer" type="Timer" parent="."]

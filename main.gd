@@ -24,7 +24,7 @@ func spawn_zombie():
 	var zombie = zombie_scene.instantiate()
 	
 	zombie.initialize(player)
-	
+
 	zombie.position = Vector3(0.0, 0.0, -3.0)
 	
 	add_child(zombie)
