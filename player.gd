@@ -62,9 +62,11 @@ const DICT_ANIMATIONS: Dictionary = {
 
 var player_state: ActionState
 
+
 func _ready() -> void:
 	play_animation(AnimationNames.IDLE)
 	player_state = ActionState.NOTHING
+
 
 ## Logique dans l'ordre :
 ## - Si saut activé + barre espace : sauter
@@ -85,7 +87,7 @@ func _physics_process(delta: float) -> void:
 		player_state = ActionState.NOTHING
 	
 	# Si on press punch, handle attack
-	if Input.is_action_pressed("punch"):
+	if Input.is_action_just_pressed("punch"):
 		attack()
 		player_state = ActionState.ATTACK
 	
@@ -95,29 +97,37 @@ func _physics_process(delta: float) -> void:
 		
 	move_if_input_requested()
 
-	
-	
+
+## Lance une aniation d'attaque : SIMPLE_ATTACK_1, SIMPLE_ATTACK_2, SLASH_HORIZONTALLY
+## Appelle l'attaque suivante si une attaque est en cours:
+## 		- SIMPLE_ATTACK_1 		-> SIMPLE_ATTACK_2
+## 		- SIMPLE_ATTACK_2 		-> SLASH_HORIZONTALLY
+## 		- SLASH_HORIZONTALLY 	-> SIMPLE_ATTACK_1
 func attack() -> void:
-	# print("Attack button pressed!")
+	
+	var length_animation: float = animation_player.current_animation_length
+	var position_animation: float = animation_player.current_animation_position
+	var animation_to_play: AnimationNames = AnimationNames.SIMPLE_ATTACK_1
 	
 	match animation_player.current_animation:
-		"punch_1":
-			pass 
-			# print("Punch_1!")
-		"punch_2":
-			pass 
-			# print("Punch_2!")
-		"punch_3":
-			pass 
-			# print("Punch_3!")
+		DICT_ANIMATIONS[AnimationNames.SIMPLE_ATTACK_1]: 
+			if position_animation / length_animation > 0.3:
+				animation_to_play = AnimationNames.SIMPLE_ATTACK_2
+				
+		DICT_ANIMATIONS[AnimationNames.SIMPLE_ATTACK_2]: 
+			if position_animation / length_animation > 0.3:
+				animation_to_play = AnimationNames.SLASH_HORIZONTALLY
+				
+		DICT_ANIMATIONS[AnimationNames.SLASH_HORIZONTALLY]: 
+			pass
 		_:
 			pass
-#			printerr("Should not be here with ", animation_player.current_animation)
 	
-	play_animation(AnimationNames.SIMPLE_ATTACK_1, 0.0, PUNCH_SPEED)
-	
+	play_animation(animation_to_play, 0.2, 1.5)
 
 
+## Joue une l'animation passée en argument avec les paramètres.
+## Récupère les animations dans DICT_ANIMATIONS avec comme [key] animation_name: AnimationNames
 func play_animation(animation_name: AnimationNames, custom_blend: float = ANIMATION_BLEND, custom_speed: float = 1.0) -> void:
 	var animation_to_play = "idle"
 	
@@ -128,6 +138,9 @@ func play_animation(animation_name: AnimationNames, custom_blend: float = ANIMAT
 	animation_player.play(animation_to_play, custom_blend, custom_speed)
 
 
+## Déplace le personnage selon les inputs.
+## Fais appel à $Pivot.look_at() et move_and_slide()
+## Mets à jours l'animation avec : IDLE / WALK / RUN
 func move_if_input_requested() -> void:
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.

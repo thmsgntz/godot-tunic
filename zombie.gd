@@ -27,6 +27,8 @@ var zombie_state: ActionState
 var barre_de_vie = 10
 var is_dead: bool = false
 
+
+## Appelé lors d'une collision
 func take_damage(_damage_taken: int) -> void:
 	barre_de_vie = barre_de_vie - 4
 	
@@ -55,7 +57,7 @@ func _ready():
 	
 	# Make sure to not await during _ready.
 	call_deferred("actor_setup")
-	
+
 
 ## Appelée lors de l'instantiation de la Scène par main.
 func initialize(target_node_to_follow: CharacterBody3D) -> void:
@@ -90,7 +92,7 @@ func _physics_process(_delta):
 		return
 
 	move_with_navigation()
-	
+
 
 ## Le mouvement par défaut pour NavigationAgent3D, met à jour l'animation avec Walk
 func move_with_navigation() -> void: 
@@ -119,6 +121,7 @@ func is_attacking() -> bool:
 	return zombie_state == ActionState.ATTACK and animation_player.is_playing()
 
 
+## Joue l'animation d'attaque
 func attack() -> void: 
 	if timer_attack.is_stopped() and zombie_state == ActionState.NOTHING:
 			timer_attack.start(WAIT_TIME_ATTACK)
@@ -132,6 +135,7 @@ func attack() -> void:
 	return
 
 
+## Joue l'animation
 func play_animation(
 	animation_name: AnimationNames, 
 	custom_blend: float = 0.0, 
