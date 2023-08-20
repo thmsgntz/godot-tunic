@@ -1,9 +1,9 @@
 extends Node
 
+@export var zombie_scene: PackedScene
+
 @onready var camera_marker: Marker3D = $CameraMarker
 @onready var player: CharacterBody3D = $Player
-
-@export var zombie_scene: PackedScene
 
 
 func _ready() -> void:
@@ -22,11 +22,11 @@ func _process(_delta: float) -> void:
 
 func spawn_zombie():
 	var zombie = zombie_scene.instantiate()
-	
+
 	zombie.initialize(player)
 
 	zombie.position = Vector3(0.0, 0.0, -3.0)
-	
+
 	add_child(zombie)
 
 
