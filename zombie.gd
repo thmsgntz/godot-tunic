@@ -26,8 +26,13 @@ var mesh: MeshInstance3D = $Pivot/zombie_all_animations_with_death/Armature/Skel
 
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 @onready var collision_hurtbox: CollisionShape3D = $Pivot/HurtBox3D/CollisionShape3D
-
+@onready var audio_player: AudioStreamPlayer = $Sounds/AudioStreamPlayer
 @onready var blink_node = $Blink
+
+@onready var splash_sound: Resource = preload("res://sounds/breeze-of-blood-122253.mp3")
+@onready var death_sound: Resource = preload("res://sounds/mix_death_zombie.mp3")
+@onready var growling_sound: Resource = preload("res://sounds/growling-zombie-104988.mp3")
+@onready var timer_growling: Timer = $Sounds/TimerGrowling
 
 
 ## Appelé lors d'une collision
@@ -37,14 +42,13 @@ func take_damage(_damage_taken: int) -> void:
     if barre_de_vie <= 0:
         var animation_death = "zombie_death_" + str(randi_range(1, 4))
         animation_player.play(animation_death)
-        is_dead = true
-        collision_shape.set_deferred("disabled", true)
-        collision_hurtbox.set_deferred("disabled", true)
-        set_physics_process(false)
-        #queue_free()
+        dead()
     else:
         if blink_node:
             blink_node.blink()
+
+        audio_player.stream = splash_sound
+        audio_player.play()
 
 
 ## Met à jours le NavigationAgend3D, l'état à ActionState.Nothing
@@ -57,9 +61,20 @@ func _ready():
 
     zombie_state = ActionState.NOTHING
 
+    timer_growling.timeout.connect(play_sound_growling)
+
     # Make sure to not await during _ready.
     call_deferred("actor_setup")
 
+
+func play_sound_growling():
+    if is_dead or audio_player.playing:
+        return
+
+    audio_player.stream = growling_sound
+    audio_player.play()
+
+    timer_growling.start(randi_range(1,5))
 
 ## Appelée lors de l'instantiation de la Scène par main.
 func initialize(target_node_to_follow: CharacterBody3D) -> void:
@@ -175,3 +190,19 @@ func update_target_position():
         navigation_agent.set_target_position(target_node.position)
     else:
         print(self, " : target is null")
+
+## Zombie is dead, set some variables
+func dead():
+    is_dead = true
+    timer_growling.stop()
+
+    collision_shape.set_deferred("disabled", true)
+    collision_hurtbox.set_deferred("disabled", true)
+
+    set_physics_process(false)
+
+    audio_player.stream = death_sound
+    audio_player.play()
+
+
+    #queue_free()

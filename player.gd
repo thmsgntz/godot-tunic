@@ -116,36 +116,26 @@ func attack() -> void:
 
     var animation_to_play: AnimationNames = AnimationNames.SIMPLE_ATTACK_1
 
-    print(
-        "Attack entering: ",
-        player_state,
-        " ",
-        animation_player.current_animation,
-        " ",
-        animation_player.current_animation_length
-    )
-    print("attack_animations_dict: ", attack_animations)
     var index = DICT_ANIMATIONS.values().find(animation_player.current_animation)
     var index_attack = attack_animations.find(index + 1)
-    print(index, " ", index_attack)
     if index_attack != -1:
         var length_animation: float = animation_player.current_animation_length
         var position_animation: float = animation_player.current_animation_position
         var offset_animation: float = position_animation / length_animation
-        print("offset:", offset_animation)
+
         if offset_animation > 0.5 and offset_animation < 0.7:
-            print("playnext")
             animation_to_play = attack_animations[(index_attack + 1) % len(attack_animations)]
             # animation_to_play = AnimationNames.SIMPLE_ATTACK_2
             audio_stream.stream = sound_sword_swing_1
             audio_stream.play()
             play_animation(animation_to_play, 0.2, 1.5)
+
     elif player_state != ActionState.ATTACK:
         audio_stream.stream = sound_sword_swing_1
         audio_stream.play()
         play_animation(animation_to_play, 0.0, 1.5)
 
-    print("Attack leaving: ", player_state, " ", animation_player.current_animation)
+
 
 
 ## Joue une l'animation passée en argument avec les paramètres.
@@ -191,7 +181,7 @@ func move_if_input_requested() -> void:
         velocity.z = move_toward(velocity.z, 0, walk_speed)
 
         if animation_player.current_animation != DICT_ANIMATIONS[AnimationNames.IDLE]:
-            print("playing IDLE")
+            # print("playing IDLE")
             play_animation(AnimationNames.IDLE)
 
     move_and_slide()

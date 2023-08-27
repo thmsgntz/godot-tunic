@@ -158,10 +158,19 @@ wait_time = 2.0
 avoidance_enabled = true
 height = 2.01
 radius = 1.01
+use_3d_avoidance = true
 debug_path_custom_color = Color(1, 0, 1, 1)
 
 [node name="Blink" parent="." node_paths=PackedStringArray("mesh_to_blink") instance=ExtResource("4_thot1")]
 mesh_to_blink = NodePath("../Pivot/zombie_all_animations_with_death/Armature/Skeleton3D/Yaku_zombie")
 mesh = SubResource("StandardMaterial3D_0nesk")
+
+[node name="Sounds" type="Node3D" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Sounds"]
+bus = &"Splash_sound"
+
+[node name="TimerGrowling" type="Timer" parent="Sounds"]
+autostart = true
 
 [editable path="Pivot/zombie_all_animations_with_death"]

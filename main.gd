@@ -4,10 +4,13 @@ extends Node
 
 @onready var camera_marker: Marker3D = $CameraMarker
 @onready var player: CharacterBody3D = $Player
+@onready var audio_stream: AudioStreamPlayer = $Music
 
+@onready var sound_dark_ambiance: Resource = preload("res://sounds/music/dark_atmosphere.mp3")
 
 func _ready() -> void:
-    pass
+    audio_stream.stream = sound_dark_ambiance
+    audio_stream.play()
 
 
 func move_camera(position: Vector3) -> void:
@@ -32,5 +35,5 @@ func spawn_zombie():
 
 func _unhandled_key_input(event: InputEvent) -> void:
     if event.is_action_pressed("spawn_zombie"):
-        print("spawn zombie!")
+        # print("spawn zombie!")
         spawn_zombie()
