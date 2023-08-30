@@ -65,6 +65,13 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var audio_stream: AudioStreamPlayer = $AudioStreamPlayer
 @onready var sound_sword_swing_1: Resource = preload("res://sounds/sword/knife-slice.mp3")
 
+var health: int = 10
+
+func take_damage(_damage_taken: float) -> void:
+    health -= 10
+    print("DEAD")
+
+
 
 func _ready() -> void:
     play_animation(AnimationNames.IDLE)
