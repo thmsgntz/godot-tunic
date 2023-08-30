@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+signal zombie_death
+
 enum AnimationNames { IDLE, WALK, PUNCH_1 }
 enum ActionState { NOTHING, ATTACK }
 
@@ -41,11 +43,13 @@ func take_damage(_damage_taken: int) -> void:
 
     if barre_de_vie <= 0:
         var animation_death = "zombie_death_" + str(randi_range(1, 4))
-        animation_player.play(animation_death)
+        animation_player.play(animation_death, 0.0, 1.5)
         dead()
+
     else:
         if blink_node:
             blink_node.blink()
+
 
         audio_player.stream = splash_sound
         audio_player.play()
@@ -204,5 +208,10 @@ func dead():
     audio_player.stream = death_sound
     audio_player.play()
 
+    ## Emit signal for main, so that it keeps track of the zombie count on the map
+    emit_signal("zombie_death")
 
-    #queue_free()
+## Remove zombie from the game
+func despawn():
+    await get_tree().create_timer(5.0).timeout
+    queue_free()

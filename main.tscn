@@ -136,4 +136,8 @@ mesh = SubResource("CylinderMesh_lbwl1")
 
 [node name="Player" parent="." instance=ExtResource("3_wxgjr")]
 
-[node name="Music" type="AudioStreamPlayer" parent="."]
+[node name="Sounds" type="Node3D" parent="."]
+
+[node name="Music" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="Effects" type="AudioStreamPlayer" parent="Sounds"]
