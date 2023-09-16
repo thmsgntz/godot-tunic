@@ -17,6 +17,7 @@ var zombie_state: ActionState
 
 var barre_de_vie = 10
 var is_dead: bool = false
+var is_navigation_map_ready: bool = false
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var target_node: CharacterBody3D
@@ -28,13 +29,12 @@ var mesh: MeshInstance3D = $Pivot/zombie_all_animations_with_death/Armature/Skel
 
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 @onready var collision_hurtbox: CollisionShape3D = $Pivot/HurtBox3D/CollisionShape3D
-@onready var audio_player: AudioStreamPlayer = $Sounds/AudioStreamPlayer
 @onready var blink_node = $Blink
 
-@onready var splash_sound: Resource = preload("res://sounds/breeze-of-blood-122253.mp3")
-@onready var death_sound: Resource = preload("res://sounds/mix_death_zombie.mp3")
-@onready var growling_sound: Resource = preload("res://sounds/growling-zombie-104988.mp3")
-@onready var timer_growling: Timer = $Sounds/TimerGrowling
+@onready var audio_zombie_death: AudioStreamPlayer3D = $Audio/Death
+@onready var audio_zombie_growling: AudioStreamPlayer3D = $Audio/Growling
+@onready var audio_zombie_getting_hit: AudioStreamPlayer3D = $Audio/Splash
+@onready var timer_growling: Timer = $Audio/TimerGrowling
 
 
 ## Appelé lors d'une collision
@@ -50,9 +50,7 @@ func take_damage(_damage_taken: int) -> void:
         if blink_node:
             blink_node.blink()
 
-
-        audio_player.stream = splash_sound
-        audio_player.play()
+        play_sound(audio_zombie_getting_hit)
 
 
 ## Met à jours le NavigationAgend3D, l'état à ActionState.Nothing
@@ -72,11 +70,10 @@ func _ready():
 
 
 func play_sound_growling():
-    if is_dead or audio_player.playing:
+    if is_dead or audio_zombie_growling.playing:
         return
 
-    audio_player.stream = growling_sound
-    audio_player.play()
+    play_sound(audio_zombie_growling)
 
     timer_growling.start(randi_range(1,5))
 
@@ -183,6 +180,7 @@ func play_animation(
 func actor_setup():
     # Wait for the first physics frame so the NavigationServer can sync.
     await get_tree().physics_frame
+    is_navigation_map_ready = true
 
     # Now that the navigation map is no longer empty, set the movement target.
     update_target_position()
@@ -190,6 +188,9 @@ func actor_setup():
 
 ## Update la target_position du NavigationAgent3D
 func update_target_position():
+    if not is_navigation_map_ready:
+        return
+
     if target_node != null:
         navigation_agent.set_target_position(target_node.position)
     else:
@@ -205,8 +206,7 @@ func dead():
 
     set_physics_process(false)
 
-    audio_player.stream = death_sound
-    audio_player.play()
+    play_sound(audio_zombie_death)
 
     ## Emit signal for main, so that it keeps track of the zombie count on the map
     emit_signal("zombie_death")
@@ -215,3 +215,7 @@ func dead():
 func despawn():
     await get_tree().create_timer(5.0).timeout
     queue_free()
+
+
+func play_sound(player: AudioStreamPlayer3D) -> void:
+    player.play()

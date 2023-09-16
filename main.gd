@@ -19,6 +19,10 @@ func _ready() -> void:
 	stream_audio_music.stream = sound_dark_ambiance
 	stream_audio_music.play()
 
+	spawn_zombie(Vector3(7.0, 0.0, 0.0))
+	spawn_zombie(Vector3(0.0, 0.0, -7.0))
+	spawn_zombie(Vector3(-7.0, 0.0, 0.0))
+
 
 func move_camera(position: Vector3) -> void:
 	"""Deplace le CameraMarker à la position donnée (Player)."""
@@ -31,13 +35,13 @@ func _process(_delta: float) -> void:
 
 
 ## Spawn a zombie, connect its signal and update number_of_zombie_alive
-func spawn_zombie():
+func spawn_zombie(position_vec3: Vector3 = Vector3.ZERO):
 	var zombie = zombie_scene.instantiate()
 
 	zombie.initialize(player)
 	zombie.zombie_death.connect(decrease_zombie_count)
 
-	zombie.position = Vector3(0.0, 0.0, -3.0)
+	zombie.position = position_vec3
 
 	add_child(zombie)
 	number_of_zombie_alive += 1

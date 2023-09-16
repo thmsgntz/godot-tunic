@@ -141,3 +141,7 @@ mesh = SubResource("CylinderMesh_lbwl1")
 [node name="Music" type="AudioStreamPlayer" parent="Sounds"]
 
 [node name="Effects" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.105169, 0, 0)
+visible = false
