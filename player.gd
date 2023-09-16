@@ -1,4 +1,4 @@
-extends CharacterBody3D
+extends Animated3DCharacter
 
 enum AnimationNames {
 	IDLE,
@@ -72,16 +72,15 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var audio_death: AudioStreamPlayer3D = $Audio/Death
 
 
-
 func take_damage(_damage_taken: float) -> void:
 	health -= 2
 
 	if health <= 0:
-		play_animation(AnimationNames.DEATH, 0.0, 1.0)
+		_play_animation(AnimationNames.DEATH, 0.0, 1.0)
 		play_sound(audio_death)
 		death()
 	else:
-		play_animation(AnimationNames.HIT, 0.0, 1.0)
+		_play_animation(AnimationNames.HIT, 0.0, 1.0)
 		play_sound(audio_get_hit)
 
 
@@ -90,14 +89,11 @@ func death() -> void:
 	set_process(false)
 	get_node("CollisionShape3D").set_deferred("disabled", true)
 
-	(
-		get_node("Pivot/HurtBox3D/CollisionShape3D")
-		.set_deferred("disabled", true)
-	)
+	get_node("Pivot/HurtBox3D/CollisionShape3D").set_deferred("disabled", true)
 
 
 func _ready() -> void:
-	play_animation(AnimationNames.IDLE)
+	_play_animation(AnimationNames.IDLE)
 	player_state = ActionState.NOTHING
 
 
@@ -160,25 +156,11 @@ func attack() -> void:
 			animation_to_play = attack_animations[(index_attack + 1) % len(attack_animations)]
 			# animation_to_play = AnimationNames.SIMPLE_ATTACK_2
 			play_sound(audio_sword_sound_1)
-			play_animation(animation_to_play, 0.2, 1.5)
+			_play_animation(animation_to_play, 0.2, 1.5)
 
 	elif player_state != ActionState.ATTACK:
 		play_sound(audio_sword_sound_1)
-		play_animation(animation_to_play, 0.0, 1.5)
-
-
-## Joue une l'animation passée en argument avec les paramètres.
-## Récupère les animations dans DICT_ANIMATIONS avec comme [key] animation_name: AnimationNames
-func play_animation(
-	animation_name: AnimationNames, custom_blend: float = animation_blend, custom_speed: float = 1.0
-) -> void:
-	var animation_to_play = "idle"
-
-	animation_to_play = DICT_ANIMATIONS.get(animation_name, null)
-	if animation_to_play == null:
-		printerr("Animation non reconnue : '", animation_to_play, "'. Playing idle.")
-
-	animation_player.play(animation_to_play, custom_blend, custom_speed)
+		_play_animation(animation_to_play, 0.0, 1.5)
 
 
 ## Déplace le personnage selon les inputs.
@@ -202,7 +184,7 @@ func move_if_input_requested() -> void:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
 
-		play_animation(animation)
+		_play_animation(animation)
 
 		$Pivot.look_at(position + direction, Vector3.UP, true)
 	else:
@@ -211,10 +193,14 @@ func move_if_input_requested() -> void:
 
 		if animation_player.current_animation != DICT_ANIMATIONS[AnimationNames.IDLE]:
 			# print("playing IDLE")
-			play_animation(AnimationNames.IDLE)
+			_play_animation(AnimationNames.IDLE)
 
 	move_and_slide()
 
 
-func play_sound(player: AudioStreamPlayer3D) -> void:
-	player.play()
+func _play_animation(
+	animation_name: AnimationNames, custom_blend: float = 1.0, custom_speed: float = 1.0
+):
+	super.play_animation(
+		DICT_ANIMATIONS, animation_player, animation_name, custom_blend, custom_speed
+	)
