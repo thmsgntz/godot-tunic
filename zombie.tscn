@@ -1,9 +1,9 @@
 [gd_scene load_steps=22 format=3 uid="uid://b34rt0x5masod"]
 
 [ext_resource type="Script" path="res://zombie.gd" id="1_qt6aj"]
-[ext_resource type="Script" path="res://custom_nodes/hurt_box_3D.gd" id="3_nbceb"]
+[ext_resource type="Script" path="res://custom_nodes/hurt_box_3D_Monster.gd" id="2_y5jmn"]
 [ext_resource type="PackedScene" uid="uid://dh5htexelqomh" path="res://models_3D/zombie/zombie_all_animations_with_death.gltf" id="3_qpl1k"]
-[ext_resource type="Script" path="res://custom_nodes/hit_box_3D.gd" id="4_ltuf6"]
+[ext_resource type="Script" path="res://custom_nodes/hit_box_3D_Monster.gd" id="4_bmwbd"]
 [ext_resource type="PackedScene" uid="uid://2pegvisve484" path="res://blink_scene.tscn" id="4_thot1"]
 [ext_resource type="AudioStream" uid="uid://cmloevk6cnmei" path="res://sounds/breeze-of-blood-122253.mp3" id="6_rbdfv"]
 [ext_resource type="AudioStream" uid="uid://cl3ls5hb0wy64" path="res://sounds/growling-zombie-104988.mp3" id="7_ypog8"]
@@ -16,7 +16,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../HitBox3D/CollisionShape3D:disabled")
+tracks/0/path = NodePath("../HitBox3DMonster/CollisionShape3D:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -1646,7 +1646,7 @@ tracks/114/keys = PackedFloat32Array(0, 1, 1.17876e-06, 8.84993, 5.32193e-07)
 tracks/115/type = "value"
 tracks/115/imported = false
 tracks/115/enabled = true
-tracks/115/path = NodePath("../HitBox3D/CollisionShape3D:disabled")
+tracks/115/path = NodePath("../HitBox3DMonster/CollisionShape3D:disabled")
 tracks/115/interp = 1
 tracks/115/loop_wrap = true
 tracks/115/keys = {
@@ -5730,10 +5730,12 @@ script = ExtResource("1_qt6aj")
 
 [node name="Pivot" type="Node3D" parent="."]
 
-[node name="HurtBox3D" type="Area3D" parent="Pivot"]
-script = ExtResource("3_nbceb")
+[node name="HurtBox3DMonster" type="Area3D" parent="Pivot"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("2_y5jmn")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/HurtBox3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/HurtBox3DMonster"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0619455, 1.00846, 0.120769)
 shape = SubResource("CylinderShape3D_5rxgg")
 
@@ -5861,12 +5863,13 @@ libraries = {
 "": SubResource("AnimationLibrary_3cmeh")
 }
 
-[node name="HitBox3D" type="Area3D" parent="Pivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02609, 0.980046)
-script = ExtResource("4_ltuf6")
+[node name="HitBox3DMonster" type="Area3D" parent="Pivot"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("4_bmwbd")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/HitBox3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.138564, 0, 0.0898396)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/HitBox3DMonster"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.138564, 1.02609, 1.06989)
 shape = SubResource("BoxShape3D_jxt34")
 disabled = true
 

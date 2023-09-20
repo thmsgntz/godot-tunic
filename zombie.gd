@@ -34,7 +34,7 @@ var mesh: MeshInstance3D = $Pivot/zombie_all_animations_with_death/Armature/Skel
 @onready var timer_attack: Timer = $TimerAttack
 
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
-@onready var collision_hurtbox: CollisionShape3D = $Pivot/HurtBox3D/CollisionShape3D
+@onready var collision_hurtbox: CollisionShape3D = $Pivot/HurtBox3DMonster/CollisionShape3D
 @onready var blink_node = $Blink
 
 @onready var audio_zombie_death: AudioStreamPlayer3D = $Audio/Death
@@ -205,3 +205,13 @@ func dead():
 func despawn():
 	await get_tree().create_timer(5.0).timeout
 	queue_free()
+
+## Returns [hurt_mask, hurt_layer, hit_mask, hit_layer]
+func get_collision_info():
+	var hurt_mask: int = $Pivot/HurtBox3DMonster.collision_mask
+	var hurt_layer: int = $Pivot/HurtBox3DMonster.collision_layer
+
+	var hit_mask: int = $Pivot/HitBox3DMonster.collision_mask
+	var hit_layer: int = $Pivot/HitBox3DMonster.collision_layer
+
+	return [hurt_mask, hurt_layer, hit_mask, hit_layer]

@@ -1,5 +1,8 @@
 extends Animated3DCharacter
 
+## Emitted when the players dies, catched by main.
+signal player_dead
+
 enum AnimationNames {
 	IDLE,
 	WALK,
@@ -73,7 +76,7 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
 func take_damage(_damage_taken: float) -> void:
-	health -= 2
+	health -= 3
 
 	if health <= 0:
 		_play_animation(AnimationNames.DEATH, 0.0, 1.0)
@@ -89,7 +92,8 @@ func death() -> void:
 	set_process(false)
 	get_node("CollisionShape3D").set_deferred("disabled", true)
 
-	get_node("Pivot/HurtBox3D/CollisionShape3D").set_deferred("disabled", true)
+	get_node("Pivot/HurtBox3DPlayer/CollisionShape3D").set_deferred("disabled", true)
+	player_dead.emit()
 
 
 func _ready() -> void:
@@ -204,3 +208,19 @@ func _play_animation(
 	super.play_animation(
 		DICT_ANIMATIONS, animation_player, animation_name, custom_blend, custom_speed
 	)
+
+
+func get_collision_info() -> Array:
+	var hurt_mask: int = $Pivot/HurtBox3DPlayer.collision_mask
+	var hurt_layer: int = $Pivot/HurtBox3DPlayer.collision_layer
+
+	var hit_mask: int = (
+		$Pivot/dwarf_with_sword_animations/Armature/Skeleton3D/BoneAttachment3D/HitBox3DPlayer
+		. collision_mask
+	)
+	var hit_layer: int = (
+		$Pivot/dwarf_with_sword_animations/Armature/Skeleton3D/BoneAttachment3D/HitBox3DPlayer
+		. collision_layer
+	)
+
+	return [hurt_mask, hurt_layer, hit_mask, hit_layer]

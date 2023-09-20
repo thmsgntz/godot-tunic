@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://2t7v68cgmcsi"]
+[gd_scene load_steps=15 format=3 uid="uid://2t7v68cgmcsi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_djwls"]
 [ext_resource type="Texture2D" uid="uid://dj0d1ayfqcp2o" path="res://materials/FoliageGrass-B.png" id="1_krqqn"]
 [ext_resource type="Texture2D" uid="uid://bb6uy7lvxosaq" path="res://materials/SurfaceStone-B.png" id="2_7irc1"]
 [ext_resource type="PackedScene" uid="uid://d0h3mto0h7tn3" path="res://player.tscn" id="3_wxgjr"]
 [ext_resource type="PackedScene" uid="uid://b34rt0x5masod" path="res://zombie.tscn" id="5_p163k"]
+[ext_resource type="Script" path="res://UserInterface.gd" id="6_ruvl5"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_2nf3f"]
 radius = 15.0
@@ -43,6 +44,29 @@ height = 0.02
 [node name="Main" type="Node"]
 script = ExtResource("1_djwls")
 zombie_scene = ExtResource("5_p163k")
+
+[node name="UserInterface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1600.0
+offset_bottom = 1200.0
+script = ExtResource("6_ruvl5")
+
+[node name="RetryButton" type="ColorRect" parent="UserInterface"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "Game Over.
+Retry?"
+color = Color(0, 0, 0, 1)
+
+[node name="BlackScreenTimer" type="Timer" parent="UserInterface/RetryButton"]
+wait_time = 5.0
+one_shot = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.858074, -0.0868593, -0.506127, 0.513526, 0.145137, 0.84571, -3.55504e-09, -0.985592, 0.169143, 0, 12.4428, 0)

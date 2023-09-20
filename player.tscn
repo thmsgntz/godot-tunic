@@ -1,16 +1,14 @@
 [gd_scene load_steps=33 format=3 uid="uid://d0h3mto0h7tn3"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_0pvc3"]
-[ext_resource type="Script" path="res://custom_nodes/hit_box_3D.gd" id="3_151sg"]
 [ext_resource type="PackedScene" uid="uid://bql5httmik6ub" path="res://models_3D/player/dwark_all_animations.gltf" id="3_eifkt"]
-[ext_resource type="Script" path="res://custom_nodes/hurt_box_3D.gd" id="5_bmai7"]
+[ext_resource type="Script" path="res://custom_nodes/hit_box_3D_player.gd" id="5_3xwyb"]
 [ext_resource type="PackedScene" uid="uid://2pegvisve484" path="res://blink_scene.tscn" id="5_s8f83"]
+[ext_resource type="Script" path="res://custom_nodes/hurt_box_3D_player.gd" id="5_xwe1a"]
 [ext_resource type="PackedScene" uid="uid://b17y25yfl8fg" path="res://models_3D/weapons/sword.gltf" id="6_4knsy"]
 [ext_resource type="AudioStream" uid="uid://cmspjiaxk3jca" path="res://sounds/sword/sword-sound-2.mp3" id="6_io5in"]
 [ext_resource type="AudioStream" uid="uid://bk6ccpr08g24m" path="res://sounds/player/male_hurt7-48124.mp3" id="8_7cnea"]
 [ext_resource type="AudioStream" uid="uid://b5vk8mh8bp1la" path="res://sounds/player/male-death-sound-128357.mp3" id="9_coama"]
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_f5qwv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a0bws"]
 radius = 12.524
@@ -23,7 +21,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Armature/Skeleton3D/BoneAttachment3D/HitBox3D/CollisionShape3D:disabled")
+tracks/0/path = NodePath("Armature/Skeleton3D/BoneAttachment3D/HitBox3DPlayer/CollisionShape3D:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -564,7 +562,7 @@ tracks/74/keys = PackedFloat32Array(0, 1, -7.67045e-07, 13.3829, -1.12923e-07)
 tracks/75/type = "value"
 tracks/75/imported = false
 tracks/75/enabled = true
-tracks/75/path = NodePath("Armature/Skeleton3D/BoneAttachment3D/HitBox3D/CollisionShape3D:disabled")
+tracks/75/path = NodePath("Armature/Skeleton3D/BoneAttachment3D/HitBox3DPlayer/CollisionShape3D:disabled")
 tracks/75/interp = 1
 tracks/75/loop_wrap = true
 tracks/75/keys = {
@@ -1105,7 +1103,7 @@ tracks/74/keys = PackedFloat32Array(0, 1, -7.67045e-07, 13.3829, -1.12923e-07)
 tracks/75/type = "value"
 tracks/75/imported = false
 tracks/75/enabled = true
-tracks/75/path = NodePath("Armature/Skeleton3D/BoneAttachment3D/HitBox3D/CollisionShape3D:disabled")
+tracks/75/path = NodePath("Armature/Skeleton3D/BoneAttachment3D/HitBox3DPlayer/CollisionShape3D:disabled")
 tracks/75/interp = 1
 tracks/75/loop_wrap = true
 tracks/75/keys = {
@@ -7994,7 +7992,7 @@ tracks/74/keys = PackedFloat32Array(0, 1, 1.1411e-06, 13.3829, -3.49712e-07)
 tracks/75/type = "value"
 tracks/75/imported = false
 tracks/75/enabled = true
-tracks/75/path = NodePath("Armature/Skeleton3D/BoneAttachment3D/HitBox3D/CollisionShape3D:disabled")
+tracks/75/path = NodePath("Armature/Skeleton3D/BoneAttachment3D/HitBox3DPlayer/CollisionShape3D:disabled")
 tracks/75/interp = 1
 tracks/75/loop_wrap = true
 tracks/75/keys = {
@@ -9084,6 +9082,8 @@ _data = {
 "walk_no_sword": SubResource("Animation_cr5o4")
 }
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_f5qwv"]
+
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_lgisk"]
 height = 1.75
 radius = 0.25
@@ -9094,13 +9094,6 @@ script = ExtResource("1_0pvc3")
 
 [node name="Pivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000784397, 0.00436211, -0.00063467)
-
-[node name="HurtBox3D" type="Area3D" parent="Pivot"]
-script = ExtResource("5_bmai7")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/HurtBox3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09466, 0.000301242)
-shape = SubResource("CylinderShape3D_f5qwv")
 
 [node name="dwarf_with_sword_animations" parent="Pivot" instance=ExtResource("3_eifkt")]
 
@@ -9189,17 +9182,18 @@ bone_idx = 24
 [node name="sword" parent="Pivot/dwarf_with_sword_animations/Armature/Skeleton3D/BoneAttachment3D" instance=ExtResource("6_4knsy")]
 transform = Transform3D(3.05919, 89.6638, -44.1712, -19.071, 43.9036, 87.7997, 98.1171, 5.7379, 18.4429, -17.3691, 5.04988, 3.63717)
 
-[node name="HitBox3D" type="Area3D" parent="Pivot/dwarf_with_sword_animations/Armature/Skeleton3D/BoneAttachment3D"]
-transform = Transform3D(0.893217, -0.411939, -0.180193, 0.424576, 0.904656, 0.0364967, 0.147978, -0.109105, 0.982954, -1.15275, 13.9559, -0.0745239)
-script = ExtResource("3_151sg")
+[node name="HitBox3DPlayer" type="Area3D" parent="Pivot/dwarf_with_sword_animations/Armature/Skeleton3D/BoneAttachment3D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("5_3xwyb")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/dwarf_with_sword_animations/Armature/Skeleton3D/BoneAttachment3D/HitBox3D"]
-transform = Transform3D(0.0103377, 0.999267, 0.036856, -0.999946, 0.0103667, -0.000603349, -0.000984842, -0.0368479, 0.99932, 81.6899, 1.07356, -2.03307)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/dwarf_with_sword_animations/Armature/Skeleton3D/BoneAttachment3D/HitBox3DPlayer"]
+transform = Transform3D(0.421328, 0.894932, -0.146902, -0.900254, 0.432298, 0.0515742, 0.109661, 0.110519, 0.987805, 71.7382, 49.5365, 9.89824)
 shape = SubResource("CapsuleShape3D_a0bws")
 disabled = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot/dwarf_with_sword_animations/Armature/Skeleton3D/BoneAttachment3D/HitBox3D"]
-transform = Transform3D(1, -2.68221e-07, 1.78814e-07, 2.98023e-08, 1, -2.98023e-08, 4.47035e-08, -1.49012e-07, 1, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot/dwarf_with_sword_animations/Armature/Skeleton3D/BoneAttachment3D/HitBox3DPlayer"]
+transform = Transform3D(0.893217, -0.411939, -0.180193, 0.424576, 0.904656, 0.0364968, 0.147978, -0.109105, 0.982954, -1.15275, 13.9559, -0.0745239)
 visible = false
 mesh = SubResource("CapsuleMesh_eoij8")
 skeleton = NodePath("")
@@ -9208,6 +9202,15 @@ skeleton = NodePath("")
 libraries = {
 "": SubResource("AnimationLibrary_blrey")
 }
+
+[node name="HurtBox3DPlayer" type="Area3D" parent="Pivot"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("5_xwe1a")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/HurtBox3DPlayer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09466, 0.000301242)
+shape = SubResource("CylinderShape3D_f5qwv")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.878921, 0)
