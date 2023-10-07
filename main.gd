@@ -1,24 +1,23 @@
 extends Node
 
+enum GameState { STARTING, WAVE_1, GAME_OVER }
+
 @export var zombie_scene: PackedScene
+
 
 var zombie_save: Animated3DCharacter
 var number_of_zombie_alive: int = 0
+var score: int = 0
+var _game_state: GameState
 
 @onready var camera_marker: Marker3D = $CameraMarker
 @onready var player: CharacterBody3D = $Player
-@onready var stream_audio_music: AudioStreamPlayer = $Sounds/Music
-@onready var stream_audio_effect: AudioStreamPlayer = $Sounds/Effects
 
-@onready var sound_dark_ambiance: Resource = preload("res://sounds/music/dark_atmosphere.mp3")
-@onready var effect_transition_level: Resource = preload(
-	"res://sounds/transitions/creepy-transition-retouche.mp3"
-)
 
 
 func _ready() -> void:
-	stream_audio_music.stream = sound_dark_ambiance
-	stream_audio_music.play()
+	_game_state = GameState.STARTING
+	$Sounds.start_music()
 
 	spawn_zombie(Vector3(7.0, 0.0, 0.0))
 	spawn_zombie(Vector3(0.0, 0.0, -7.0))
@@ -55,13 +54,13 @@ func spawn_zombie(position_vec3: Vector3 = Vector3.ZERO):
 ## Decrease number_of_zombie_alive and call freeze_engine if this is the last one.
 func decrease_zombie_count():
 	number_of_zombie_alive -= 1
+	score += 1
 
 	if number_of_zombie_alive == 0:
 		freeze_engine()
 		get_tree().call_group("zombies", "despawn")
 		await (get_tree().create_timer(5.0).timeout)
-		stream_audio_effect.stream = effect_transition_level
-		stream_audio_effect.play()
+		$Sounds.play_level_transition_effect()
 
 
 ## Freeze l'engine pour un petit effet sympa: https://youtu.be/_qxl7CalhDM
@@ -76,7 +75,9 @@ func freeze_engine():
 
 ## Function called when the signal "player_dead" is emitted
 func player_is_dead():
-	$UserInterface.start_black_screen_fading()
+	$UserInterface.start_black_screen_fading(score)
+	_game_state = GameState.GAME_OVER
+	$Sounds.start_fading_music()
 
 
 func is_collision(p: Array, z: Array) -> bool:
@@ -94,6 +95,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("debug_collision"):
 		debug_collision()
+
+	if _game_state == GameState.GAME_OVER and event.is_action_pressed("retry"):
+		get_tree().reload_current_scene()
 
 
 func debug_collision() -> void:

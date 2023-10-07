@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://2t7v68cgmcsi"]
+[gd_scene load_steps=17 format=3 uid="uid://2t7v68cgmcsi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_djwls"]
 [ext_resource type="Texture2D" uid="uid://dj0d1ayfqcp2o" path="res://materials/FoliageGrass-B.png" id="1_krqqn"]
@@ -6,6 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://d0h3mto0h7tn3" path="res://player.tscn" id="3_wxgjr"]
 [ext_resource type="PackedScene" uid="uid://b34rt0x5masod" path="res://zombie.tscn" id="5_p163k"]
 [ext_resource type="Script" path="res://UserInterface.gd" id="6_ruvl5"]
+[ext_resource type="Script" path="res://Sounds.gd" id="7_ol5yb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jgoge"]
+font_size = 40
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_2nf3f"]
 radius = 15.0
@@ -45,6 +49,9 @@ height = 0.02
 script = ExtResource("1_djwls")
 zombie_scene = ExtResource("5_p163k")
 
+[node name="Player" parent="." instance=ExtResource("3_wxgjr")]
+health = 1
+
 [node name="UserInterface" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -60,13 +67,33 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-tooltip_text = "Game Over.
-Retry?"
 color = Color(0, 0, 0, 1)
 
 [node name="BlackScreenTimer" type="Timer" parent="UserInterface/RetryButton"]
 wait_time = 5.0
 one_shot = true
+
+[node name="LabelRetry" type="Label" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Game Over
+
+12 zombies killed
+
+Press <Space> to Retry"
+label_settings = SubResource("LabelSettings_jgoge")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.858074, -0.0868593, -0.506127, 0.513526, 0.145137, 0.84571, -3.55504e-09, -0.985592, 0.169143, 0, 12.4428, 0)
@@ -158,13 +185,14 @@ navigation_mesh = SubResource("NavigationMesh_rx1dm")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0169828, 0)
 mesh = SubResource("CylinderMesh_lbwl1")
 
-[node name="Player" parent="." instance=ExtResource("3_wxgjr")]
-
 [node name="Sounds" type="Node3D" parent="."]
+script = ExtResource("7_ol5yb")
 
 [node name="Music" type="AudioStreamPlayer" parent="Sounds"]
 
 [node name="Effects" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="Timer" type="Timer" parent="Sounds"]
 
 [node name="Marker3D" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.105169, 0, 0)

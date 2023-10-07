@@ -62,8 +62,9 @@ const JUMP_VELOCITY = 4.5
 ## Vitesse du punch mggle
 @export_range(1.0, 2.0) var punch_speed = 1.75
 
+@export_range(1, 50) var health: int = 10
+
 var player_state: ActionState
-var health: int = 10
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
