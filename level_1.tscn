@@ -1,0 +1,139 @@
+[gd_scene load_steps=13 format=3 uid="uid://dybnd28rn4l2e"]
+
+[ext_resource type="Script" path="res://level_1.gd" id="1_102kk"]
+[ext_resource type="Texture2D" uid="uid://dj0d1ayfqcp2o" path="res://materials/FoliageGrass-B.png" id="1_p3qyy"]
+[ext_resource type="Texture2D" uid="uid://bb6uy7lvxosaq" path="res://materials/SurfaceStone-B.png" id="2_t5ojv"]
+[ext_resource type="Script" path="res://level_one_sound.gd" id="4_ipged"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2nf3f"]
+radius = 15.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5tayp"]
+albedo_texture = ExtResource("1_p3qyy")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_67xvf"]
+material = SubResource("StandardMaterial3D_5tayp")
+top_radius = 15.0
+bottom_radius = 15.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_temjc"]
+albedo_texture = ExtResource("2_t5ojv")
+normal_enabled = true
+normal_scale = -1.29
+backlight = Color(1, 1, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_vt6xd"]
+material = SubResource("StandardMaterial3D_temjc")
+height = 5.0
+cap_bottom = false
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_sx5ra"]
+height = 10.0
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_rx1dm"]
+vertices = PackedVector3Array(-14.25, 0.473017, 3.75, -12.25, 0.473017, 8.25, -8.25, 0.473017, 12.25, 3.75, 0.473017, 14.25, 8.25, 0.473017, 12.25, 12.25, 0.473017, 8.25, 14.25, 0.473017, -3.75, 12.25, 0.473017, -8.25, 8.25, 0.473017, -12.25, 2.5, 0.473017, -14.5, -3.75, 0.473017, -14.25, -3.75, 0.473017, -14.25, -8.25, 0.473017, -12.25, -12.25, 0.473017, -8.25, -14.5, 0.473017, -2.5, -14.25, 0.473017, 3.75, -8.25, 0.473017, 12.25, -2.5, 0.473017, 14.5, 3.75, 0.473017, 14.25, 12.25, 0.473017, 8.25, 14.5, 0.473017, 2.5, 14.25, 0.473017, -3.75, 14.25, 0.473017, -3.75, -3.75, 0.473017, -14.25, -14.25, 0.473017, 3.75, -8.25, 0.473017, 12.25, 3.75, 0.473017, 14.25, 12.25, 0.473017, 8.25)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(5, 4, 3), PackedInt32Array(7, 6, 8), PackedInt32Array(8, 6, 9), PackedInt32Array(9, 6, 10), PackedInt32Array(12, 11, 13), PackedInt32Array(13, 11, 14), PackedInt32Array(14, 11, 15), PackedInt32Array(16, 18, 17), PackedInt32Array(19, 21, 20), PackedInt32Array(27, 26, 22), PackedInt32Array(22, 26, 25), PackedInt32Array(22, 25, 24), PackedInt32Array(22, 24, 23)]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lbwl1"]
+top_radius = 15.0
+bottom_radius = 15.0
+height = 0.02
+
+[node name="Level_1" type="Node"]
+script = ExtResource("1_102kk")
+
+[node name="CameraMarker" type="Marker3D" parent="."]
+transform = Transform3D(-1, -6.18173e-08, -6.18173e-08, 0, 0.707107, -0.707107, 8.74228e-08, -0.707107, -0.707107, 0, 0, 0)
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="Camera3D" type="Camera3D" parent="CameraMarker"]
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0, -20)
+projection = 1
+size = 11.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.858074, -0.0868592, -0.506127, 0.513526, 0.145137, 0.845711, -3.55504e-09, -0.985592, 0.169143, 0, 12.4428, 0)
+shadow_enabled = true
+
+[node name="Arena" type="Node" parent="."]
+
+[node name="Ground" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+collision_layer = 4
+collision_mask = 0
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Ground"]
+shape = SubResource("CylinderShape3D_2nf3f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Ground"]
+transform = Transform3D(1.00078, 0, 0, 0, 1.00078, 0, 0, 0, 1.00078, 0, 0, 0)
+mesh = SubResource("CylinderMesh_67xvf")
+
+[node name="Obstacles" type="Node3D" parent="Arena"]
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="Pilier" type="StaticBody3D" parent="Arena/Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 6.5)
+collision_layer = 8
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("CylinderMesh_vt6xd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Obstacles/Pilier"]
+shape = SubResource("CylinderShape3D_sx5ra")
+
+[node name="Pilier2" type="StaticBody3D" parent="Arena/Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -6.5)
+collision_layer = 8
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("CylinderMesh_vt6xd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Obstacles/Pilier2"]
+shape = SubResource("CylinderShape3D_sx5ra")
+
+[node name="Pilier3" type="StaticBody3D" parent="Arena/Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 6.5)
+collision_layer = 8
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("CylinderMesh_vt6xd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Obstacles/Pilier3"]
+shape = SubResource("CylinderShape3D_sx5ra")
+
+[node name="Pilier4" type="StaticBody3D" parent="Arena/Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, -6.5)
+collision_layer = 8
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("CylinderMesh_vt6xd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Obstacles/Pilier4"]
+shape = SubResource("CylinderShape3D_sx5ra")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.484102, 0)
+navigation_mesh = SubResource("NavigationMesh_rx1dm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0169828, 0)
+mesh = SubResource("CylinderMesh_lbwl1")
+
+[node name="Sounds" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0126629, -0.0208912, 0.0236424)
+script = ExtResource("4_ipged")
+
+[node name="Effects" type="AudioStreamPlayer" parent="Sounds"]

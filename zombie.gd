@@ -62,6 +62,7 @@ func take_damage(_damage_taken: int) -> void:
 ## Met à jours le NavigationAgend3D, l'état à ActionState.Nothing
 ## call_deferred la fonction actor_setup
 func _ready():
+	print("Zombie _ready()")
 	# These values need to be adjusted for the actor's speed
 	# and the navigation layout.
 	navigation_agent.path_desired_distance = path_distance

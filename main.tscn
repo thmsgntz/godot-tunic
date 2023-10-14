@@ -1,55 +1,18 @@
-[gd_scene load_steps=17 format=3 uid="uid://2t7v68cgmcsi"]
+[gd_scene load_steps=6 format=3 uid="uid://2t7v68cgmcsi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_djwls"]
-[ext_resource type="Texture2D" uid="uid://dj0d1ayfqcp2o" path="res://materials/FoliageGrass-B.png" id="1_krqqn"]
-[ext_resource type="Texture2D" uid="uid://bb6uy7lvxosaq" path="res://materials/SurfaceStone-B.png" id="2_7irc1"]
 [ext_resource type="PackedScene" uid="uid://d0h3mto0h7tn3" path="res://player.tscn" id="3_wxgjr"]
-[ext_resource type="PackedScene" uid="uid://b34rt0x5masod" path="res://zombie.tscn" id="5_p163k"]
 [ext_resource type="Script" path="res://UserInterface.gd" id="6_ruvl5"]
 [ext_resource type="Script" path="res://Sounds.gd" id="7_ol5yb"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_jgoge"]
 font_size = 40
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_2nf3f"]
-radius = 15.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5tayp"]
-albedo_texture = ExtResource("1_krqqn")
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_67xvf"]
-material = SubResource("StandardMaterial3D_5tayp")
-top_radius = 15.0
-bottom_radius = 15.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_temjc"]
-albedo_texture = ExtResource("2_7irc1")
-normal_enabled = true
-normal_scale = -1.29
-backlight = Color(1, 1, 1, 1)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_vt6xd"]
-material = SubResource("StandardMaterial3D_temjc")
-height = 5.0
-cap_bottom = false
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_sx5ra"]
-height = 10.0
-
-[sub_resource type="NavigationMesh" id="NavigationMesh_rx1dm"]
-vertices = PackedVector3Array(-11.5, 0.473017, -9.25, -11.75, 0.473017, -8.5, -7.25, 0.473017, -7.5, -5.75, 0.473017, -7.5, -2.5, 0.473017, -14.5, -8.25, 0.473017, -12.25, 5.5, 0.473017, -6.5, 5.75, 0.473017, -7.5, 3.75, 0.473017, -14.25, -2.5, 0.473017, -14.5, -5.75, 0.473017, -7.5, -5.5, 0.473017, -6.5, 5.75, 0.473017, -7.5, 7.25, 0.473017, -7.5, 8.5, 0.473017, -11.75, 7, 0.473017, -13, 3.75, 0.473017, -14.25, 9.25, 0.473017, -11.5, 8.5, 0.473017, -11.75, 7.25, 0.473017, -7.5, 7.5, 0.473017, -5.75, 14.5, 0.473017, -2.5, 12.25, 0.473017, -8.25, 6.5, 0.473017, 5.5, 7.5, 0.473017, 5.75, 14.25, 0.473017, 3.75, 14.5, 0.473017, -2.5, 7.5, 0.473017, -5.75, 6.5, 0.473017, -5.5, 7.5, 0.473017, 5.75, 7.5, 0.473017, 7.25, 11.75, 0.473017, 8.5, 13, 0.473017, 7, 14.25, 0.473017, 3.75, -11.75, 0.473017, 8.5, -7.25, 0.473017, 7.5, -7.5, 0.473017, 5.75, -14.25, 0.473017, 3.75, -13, 0.473017, 7, -7.5, 0.473017, -5.75, -7.25, 0.473017, -7.5, -11.75, 0.473017, -8.5, -13, 0.473017, -7, -14.25, 0.473017, 3.75, -7.5, 0.473017, 5.75, -6.5, 0.473017, 5.5, -6.5, 0.473017, -5.5, -13, 0.473017, -7, -14.5, 0.473017, -2.5, -6.5, 0.473017, -5.5, -7.5, 0.473017, -5.75, -13, 0.473017, -7, -6.5, 0.473017, -5.5, -6.5, 0.473017, 5.5, -5.75, 0.473017, 5.5, -5.75, 0.473017, -5.5, 5.5, 0.473017, 5.75, 6.5, 0.473017, 5.5, 6.5, 0.473017, -5.5, 5.5, 0.473017, -5.75, -5.75, 0.473017, -5.5, -5.75, 0.473017, 5.5, -5.5, 0.473017, 6.5, 5.5, 0.473017, 6.5, 5.5, 0.473017, 5.75, -5.75, 0.473017, 5.5, 5.5, 0.473017, -5.75, 5.5, 0.473017, -6.5, -5.5, 0.473017, -6.5, -5.75, 0.473017, -5.5, -7.25, 0.473017, 7.5, -11.75, 0.473017, 8.5, -11.5, 0.473017, 9.25, -8.25, 0.473017, 12.25, -2.5, 0.473017, 14.5, -5.75, 0.473017, 7.5, 9.25, 0.473017, 11.5, 11.75, 0.473017, 8.5, 7.5, 0.473017, 7.25, 5.75, 0.473017, 7.5, 5.25, 0.473017, 13.75, -2.5, 0.473017, 14.5, 2.5, 0.473017, 14.5, 5.25, 0.473017, 13.75, 5.5, 0.473017, 6.5, -5.5, 0.473017, 6.5, -5.75, 0.473017, 7.5, 5.25, 0.473017, 13.75, 5.75, 0.473017, 7.5, 5.5, 0.473017, 6.5)
-polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(3, 0, 5), PackedInt32Array(3, 5, 4), PackedInt32Array(7, 6, 8), PackedInt32Array(8, 6, 9), PackedInt32Array(9, 6, 10), PackedInt32Array(10, 6, 11), PackedInt32Array(15, 14, 16), PackedInt32Array(16, 14, 13), PackedInt32Array(16, 13, 12), PackedInt32Array(18, 17, 19), PackedInt32Array(19, 17, 20), PackedInt32Array(20, 17, 22), PackedInt32Array(20, 22, 21), PackedInt32Array(24, 23, 25), PackedInt32Array(25, 23, 26), PackedInt32Array(26, 23, 27), PackedInt32Array(27, 23, 28), PackedInt32Array(32, 31, 33), PackedInt32Array(33, 31, 30), PackedInt32Array(33, 30, 29), PackedInt32Array(38, 37, 34), PackedInt32Array(34, 37, 36), PackedInt32Array(34, 36, 35), PackedInt32Array(40, 39, 41), PackedInt32Array(41, 39, 42), PackedInt32Array(44, 43, 45), PackedInt32Array(45, 43, 48), PackedInt32Array(45, 48, 47), PackedInt32Array(45, 47, 46), PackedInt32Array(51, 50, 49), PackedInt32Array(55, 54, 52), PackedInt32Array(52, 54, 53), PackedInt32Array(57, 56, 58), PackedInt32Array(58, 56, 59), PackedInt32Array(59, 56, 61), PackedInt32Array(59, 61, 60), PackedInt32Array(63, 62, 64), PackedInt32Array(64, 62, 65), PackedInt32Array(67, 66, 68), PackedInt32Array(68, 66, 69), PackedInt32Array(71, 70, 72), PackedInt32Array(72, 70, 75), PackedInt32Array(72, 75, 73), PackedInt32Array(73, 75, 74), PackedInt32Array(78, 77, 79), PackedInt32Array(79, 77, 76), PackedInt32Array(79, 76, 80), PackedInt32Array(82, 81, 83), PackedInt32Array(83, 81, 84), PackedInt32Array(84, 81, 86), PackedInt32Array(84, 86, 85), PackedInt32Array(87, 89, 88)]
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_lbwl1"]
-top_radius = 15.0
-bottom_radius = 15.0
-height = 0.02
-
 [node name="Main" type="Node"]
 script = ExtResource("1_djwls")
-zombie_scene = ExtResource("5_p163k")
 
 [node name="Player" parent="." instance=ExtResource("3_wxgjr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00470591, -0.00884628, 0.01261)
 health = 1
 
 [node name="UserInterface" type="Control" parent="."]
@@ -95,96 +58,6 @@ label_settings = SubResource("LabelSettings_jgoge")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.858074, -0.0868593, -0.506127, 0.513526, 0.145137, 0.84571, -3.55504e-09, -0.985592, 0.169143, 0, 12.4428, 0)
-shadow_enabled = true
-
-[node name="CameraMarker" type="Marker3D" parent="."]
-transform = Transform3D(-1, -6.18173e-08, -6.18173e-08, 0, 0.707107, -0.707107, 8.74228e-08, -0.707107, -0.707107, 0, 0, 0)
-metadata/_edit_lock_ = true
-metadata/_edit_group_ = true
-
-[node name="Camera3D" type="Camera3D" parent="CameraMarker"]
-transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0, -20)
-projection = 1
-size = 11.0
-
-[node name="Arena" type="Node" parent="."]
-
-[node name="Ground" type="StaticBody3D" parent="Arena"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
-collision_layer = 4
-collision_mask = 0
-metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Ground"]
-shape = SubResource("CylinderShape3D_2nf3f")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Ground"]
-transform = Transform3D(1.00078, 0, 0, 0, 1.00078, 0, 0, 0, 1.00078, 0, 0, 0)
-mesh = SubResource("CylinderMesh_67xvf")
-
-[node name="Obstacles" type="Node3D" parent="Arena"]
-metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
-
-[node name="Pilier" type="StaticBody3D" parent="Arena/Obstacles"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 6.5)
-collision_layer = 8
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-mesh = SubResource("CylinderMesh_vt6xd")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Obstacles/Pilier"]
-shape = SubResource("CylinderShape3D_sx5ra")
-
-[node name="Pilier2" type="StaticBody3D" parent="Arena/Obstacles"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -6.5)
-collision_layer = 8
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-mesh = SubResource("CylinderMesh_vt6xd")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Obstacles/Pilier2"]
-shape = SubResource("CylinderShape3D_sx5ra")
-
-[node name="Pilier3" type="StaticBody3D" parent="Arena/Obstacles"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 6.5)
-collision_layer = 8
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-mesh = SubResource("CylinderMesh_vt6xd")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Obstacles/Pilier3"]
-shape = SubResource("CylinderShape3D_sx5ra")
-
-[node name="Pilier4" type="StaticBody3D" parent="Arena/Obstacles"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, -6.5)
-collision_layer = 8
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Obstacles/Pilier4"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-mesh = SubResource("CylinderMesh_vt6xd")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Obstacles/Pilier4"]
-shape = SubResource("CylinderShape3D_sx5ra")
-
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.484102, 0)
-navigation_mesh = SubResource("NavigationMesh_rx1dm")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0169828, 0)
-mesh = SubResource("CylinderMesh_lbwl1")
-
 [node name="Sounds" type="Node3D" parent="."]
 script = ExtResource("7_ol5yb")
 
@@ -193,7 +66,3 @@ script = ExtResource("7_ol5yb")
 [node name="Effects" type="AudioStreamPlayer" parent="Sounds"]
 
 [node name="Timer" type="Timer" parent="Sounds"]
-
-[node name="Marker3D" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.105169, 0, 0)
-visible = false
