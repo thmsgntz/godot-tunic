@@ -20,6 +20,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 
+
 func load_level_1() -> void:
 	_level_1 = _preload_level_one.instantiate()
 	_level_1.initialize(player)

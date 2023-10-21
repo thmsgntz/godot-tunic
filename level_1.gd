@@ -7,32 +7,28 @@ var zombie_scene: PackedScene = preload("res://zombie.tscn")
 
 var _player: CharacterBody3D
 var _number_of_zombie_alive: int = 0
-var _is_initialized: bool = false
 
 @onready var camera_marker: Marker3D = $CameraMarker
 
 
+func _ready() -> void:
+	pass
+
+# Initialise le level avec la position du joueur
+# La ref du joueur est passée pour le suivi de caméra
+# et pour le navigationAgent des zombies
 func initialize(player: CharacterBody3D) -> void:
 	_player = player
+	# Positionne le joueur au milieu
 	_player.position = Vector3(0.0, 0.0, 0.0)
-
-	_is_initialized = true
 
 func start_zombie() -> void:
 	spawn_zombie(Vector3(7.0, 0.0, 0.0))
 	spawn_zombie(Vector3(0.0, 0.0, -7.0))
 	spawn_zombie(Vector3(-7.0, 0.0, 0.0))
 
-
-func _ready() -> void:
-	pass
-
-
 func _process(_delta: float) -> void:
 	# move camera to player position
-	if not _is_initialized:
-		return
-
 	move_camera(_player.position)
 
 

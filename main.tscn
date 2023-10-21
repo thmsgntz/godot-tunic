@@ -13,7 +13,6 @@ script = ExtResource("1_djwls")
 
 [node name="Player" parent="." instance=ExtResource("3_wxgjr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00470591, -0.00884628, 0.01261)
-health = 1
 
 [node name="UserInterface" type="Control" parent="."]
 layout_mode = 3

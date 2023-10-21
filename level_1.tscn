@@ -55,6 +55,7 @@ size = 11.0
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.858074, -0.0868592, -0.506127, 0.513526, 0.145137, 0.845711, -3.55504e-09, -0.985592, 0.169143, 0, 12.4428, 0)
 shadow_enabled = true
+metadata/_edit_lock_ = true
 
 [node name="Arena" type="Node" parent="."]
 
@@ -127,6 +128,7 @@ shape = SubResource("CylinderShape3D_sx5ra")
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.484102, 0)
 navigation_mesh = SubResource("NavigationMesh_rx1dm")
+metadata/_edit_lock_ = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0169828, 0)
