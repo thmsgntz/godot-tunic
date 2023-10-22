@@ -22,6 +22,7 @@ Press <Space> to Retry
 func _ready() -> void:
 	_label_retry.modulate.a = 0
 	_label_retry.text = ""
+	self.visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -29,6 +30,7 @@ func _process(_delta: float) -> void:
 		fade_black_screen()
 
 func start_black_screen_fading(score: int) -> void:
+	self.visible = true
 	_is_screen_fading_to_black = true
 	black_screen_timer.wait_time = _fading_to_black
 	black_screen_timer.start()

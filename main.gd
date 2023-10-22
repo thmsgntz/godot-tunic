@@ -1,6 +1,6 @@
 extends Node
 
-enum GameState { STARTING, WAVE_1, GAME_OVER }
+enum GameState { STARTING, LEVEL_ONE, WAVE_1, GAME_OVER }
 
 var score: int = 0
 var _preload_level_one: PackedScene = preload("res://level_1.tscn")
@@ -9,12 +9,15 @@ var _level_1: Node
 var _game_state: GameState
 
 @onready var player: CharacterBody3D = $Player
+@onready var _user_interface_start_screen: Control = $UIs/StartingScreen
+@onready var _user_interface_end_game: Control = $UIs/EndGame
+
 
 
 func _ready() -> void:
-	_game_state = GameState.STARTING
-	$Sounds.start_music()
 	$Player.player_dead.connect(player_is_dead)
+	_game_state = GameState.STARTING
+	_user_interface_start_screen.show_ui()
 
 
 func _process(_delta: float) -> void:
@@ -22,6 +25,11 @@ func _process(_delta: float) -> void:
 
 
 func load_level_1() -> void:
+	_game_state = GameState.LEVEL_ONE
+	_user_interface_start_screen.hide_ui()
+
+
+	$Sounds.start_music()
 	_level_1 = _preload_level_one.instantiate()
 	_level_1.initialize(player)
 	_level_1.last_zombie_dead.connect(freeze_engine)
@@ -44,7 +52,7 @@ func freeze_engine():
 
 ## Function called when the signal "player_dead" is emitted
 func player_is_dead():
-	$UserInterface.start_black_screen_fading(score)
+	_user_interface_end_game.start_black_screen_fading(score)
 	_game_state = GameState.GAME_OVER
 	$Sounds.start_fading_music()
 
@@ -52,17 +60,17 @@ func player_is_dead():
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("spawn_zombie"):
-		_level_1.start_zombie()
-	if event.is_action_pressed("load_level"):
-		# print("spawn zombie!")
-		# _level_1.spawn_zombie()
-		load_level_1()
+		if _game_state == GameState.LEVEL_ONE:
+			_level_1.start_zombie()
 
 	if event.is_action_pressed("black_screen"):
-		$UserInterface.start_black_screen_fading()
+		_user_interface_end_game.start_black_screen_fading()
 
-	if _game_state == GameState.GAME_OVER and event.is_action_pressed("retry"):
-		get_tree().reload_current_scene()
+	if event.is_action_pressed("space_key"):
+		if _game_state == GameState.STARTING:
+			load_level_1()
+		elif _game_state == GameState.GAME_OVER:
+			get_tree().reload_current_scene()
 
 
 

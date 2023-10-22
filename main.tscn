@@ -1,11 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://2t7v68cgmcsi"]
+[gd_scene load_steps=9 format=3 uid="uid://2t7v68cgmcsi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_djwls"]
 [ext_resource type="PackedScene" uid="uid://d0h3mto0h7tn3" path="res://player.tscn" id="3_wxgjr"]
+[ext_resource type="Script" path="res://StartingScreen.gd" id="4_cdgta"]
+[ext_resource type="Texture2D" uid="uid://btn1wk1ysqdey" path="res://splash_screens/splash_screen_1.jpg" id="5_ergee"]
 [ext_resource type="Script" path="res://UserInterface.gd" id="6_ruvl5"]
 [ext_resource type="Script" path="res://Sounds.gd" id="7_ol5yb"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_jgoge"]
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_r68a1"]
 font_size = 40
 
 [node name="Main" type="Node"]
@@ -13,15 +18,23 @@ script = ExtResource("1_djwls")
 
 [node name="Player" parent="." instance=ExtResource("3_wxgjr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00470591, -0.00884628, 0.01261)
+health = 1
 
-[node name="UserInterface" type="Control" parent="."]
+[node name="UIs" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1600.0
+offset_bottom = 1200.0
+
+[node name="EndGame" type="Control" parent="UIs"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1600.0
 offset_bottom = 1200.0
 script = ExtResource("6_ruvl5")
 
-[node name="RetryButton" type="ColorRect" parent="UserInterface"]
+[node name="RetryButton" type="ColorRect" parent="UIs/EndGame"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -31,11 +44,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="BlackScreenTimer" type="Timer" parent="UserInterface/RetryButton"]
+[node name="BlackScreenTimer" type="Timer" parent="UIs/EndGame/RetryButton"]
 wait_time = 5.0
 one_shot = true
 
-[node name="LabelRetry" type="Label" parent="UserInterface"]
+[node name="LabelRetry" type="Label" parent="UIs/EndGame"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -56,6 +69,40 @@ Press <Space> to Retry"
 label_settings = SubResource("LabelSettings_jgoge")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="StartingScreen" type="Control" parent="UIs"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_cdgta")
+
+[node name="BackGround_Image" type="TextureRect" parent="UIs/StartingScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_ergee")
+
+[node name="LabelStartingGame" type="Label" parent="UIs/StartingScreen"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -274.5
+offset_top = -333.0
+offset_right = 274.5
+offset_bottom = -275.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Press <Space> to Start Game"
+label_settings = SubResource("LabelSettings_r68a1")
 
 [node name="Sounds" type="Node3D" parent="."]
 script = ExtResource("7_ol5yb")
