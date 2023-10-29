@@ -1,17 +1,22 @@
-[gd_scene load_steps=9 format=3 uid="uid://2t7v68cgmcsi"]
+[gd_scene load_steps=12 format=3 uid="uid://2t7v68cgmcsi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_djwls"]
 [ext_resource type="PackedScene" uid="uid://d0h3mto0h7tn3" path="res://player.tscn" id="3_wxgjr"]
 [ext_resource type="Script" path="res://StartingScreen.gd" id="4_cdgta"]
 [ext_resource type="Texture2D" uid="uid://btn1wk1ysqdey" path="res://splash_screens/splash_screen_1.jpg" id="5_ergee"]
+[ext_resource type="Script" path="res://Introduction.gd" id="6_qdc7s"]
 [ext_resource type="Script" path="res://UserInterface.gd" id="6_ruvl5"]
 [ext_resource type="Script" path="res://Sounds.gd" id="7_ol5yb"]
+[ext_resource type="AudioStream" uid="uid://dnvtaxsyu1gx8" path="res://sounds/transitions/big-impact-7054-retouched.mp3" id="7_rj772"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_jgoge"]
 font_size = 40
 
 [sub_resource type="LabelSettings" id="LabelSettings_r68a1"]
 font_size = 40
+
+[sub_resource type="Theme" id="Theme_njg2g"]
+default_font_size = 25
 
 [node name="Main" type="Node"]
 script = ExtResource("1_djwls")
@@ -71,6 +76,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="StartingScreen" type="Control" parent="UIs"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -104,11 +110,51 @@ grow_vertical = 0
 text = "Press <Space> to Start Game"
 label_settings = SubResource("LabelSettings_r68a1")
 
+[node name="Introduction" type="Control" parent="UIs"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_qdc7s")
+
+[node name="ColorRect" type="ColorRect" parent="UIs/Introduction"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UIs/Introduction"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -208.5
+offset_top = -186.5
+offset_right = 208.5
+offset_bottom = 186.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.00347512
+theme = SubResource("Theme_njg2g")
+bbcode_enabled = true
+scroll_active = false
+
+[node name="Timer" type="Timer" parent="UIs/Introduction/RichTextLabel"]
+
 [node name="Sounds" type="Node3D" parent="."]
 script = ExtResource("7_ol5yb")
 
 [node name="Music" type="AudioStreamPlayer" parent="Sounds"]
 
 [node name="Effects" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_rj772")
+bus = &"Transition"
 
 [node name="Timer" type="Timer" parent="Sounds"]
