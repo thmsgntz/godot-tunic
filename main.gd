@@ -74,7 +74,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_user_interface_start_screen.hide_ui()
 			_sound_music.transition_starting_screen_to_intro()
 			_introduction.active_text()
-			#_game_state = GameState.INTRO
+			_game_state = GameState.INTRO
 		elif _game_state == GameState.INTRO:
 			_introduction.hide_ui()
 			load_level_1()

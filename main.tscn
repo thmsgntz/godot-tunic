@@ -16,7 +16,7 @@ font_size = 40
 font_size = 40
 
 [sub_resource type="Theme" id="Theme_njg2g"]
-default_font_size = 25
+default_font_size = 35
 
 [node name="Main" type="Node"]
 script = ExtResource("1_djwls")
@@ -135,10 +135,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -208.5
-offset_top = -186.5
-offset_right = 208.5
-offset_bottom = 186.5
+offset_left = -347.5
+offset_top = -309.0
+offset_right = 347.5
+offset_bottom = 309.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = 0.00347512

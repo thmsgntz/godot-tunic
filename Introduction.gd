@@ -1,28 +1,11 @@
 extends Control
 
-const LOREM_IPSUM: Array = [
+const INTRODUCTION_SCRIPT: Array = [
 	[
-		"00 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-		"01 Duis elit nulla, malesuada id posuere ac, pulvinar maximus turpis.",
-		"02 Pellentesque molestie finibus leo vel rutrum."
+		"Dans un royaume maudit, Gui Second, fils du roi damné, doit laver les péchés de sa famille.",
+		"Il est téléporté dans une arène mystérieuse entouré de morts-vivants vengeurs.",
 	],
-	[
-		"10 In feugiat libero sed eleifend semper.",
-		"11 Pellentesque mattis faucibus ligula, et malesuada nibh malesuada ornare.",
-		"12 Vestibulum accumsan sodales cursus."
-	],
-	[
-		"20 Phasellus lobortis condimentum eleifend.",
-		"21 Praesent sagittis sapien enim.",
-		"22 Sed dictum quam magna, quis tempor leo condimentum sodales."
-	],
-	[
-		"30 In vel nisi ipsum.",
-		"31 Curabitur augue sem, tristique sed nunc vel, blandit vulputate neque.",
-		"32 Chasellus arcu quam, semper in arcu id, sagittis consequat massa."
-	],
-	["40 Curabitur id sodales magna."],
-	["50 Vivamus vulputate ultricies enim, a porta sem molestie eu."]
+	["Le destin du royaume repose sur lui."],
 ]
 
 # Number of charactarer faded
@@ -33,8 +16,8 @@ const LOREM_IPSUM: Array = [
 
 var _is_display_active: bool = false
 var _counter_fading: int = -20
-var _array_counter = 0
-var _sentence_counter = 0
+var _paragraph_index = 0
+var _sentence_index = 0
 
 var _tag_fading_end = "[/fade]"
 var _tag_p_start = "[p align=center]"
@@ -69,8 +52,11 @@ func active_text() -> void:
 	self.visible = true
 	_timer_text.start(_time_between_increment)
 	_label_text.text = ""
+
 	_counter_fading = _starting_counter
-	_array_counter = 0
+
+	_paragraph_index = 0
+	_sentence_index = 0
 
 
 func hide_ui() -> void:
@@ -79,51 +65,51 @@ func hide_ui() -> void:
 	_label_text.text = ""
 
 
-func _generate_tag_fading_start(counter:int, length:int) -> String:
-	return (
-		"[fade start=" + str(counter) + " length=" + str(length) + "]"
-	)
+func _generate_tag_fading_start(counter: int, length: int) -> String:
+	return "[fade start=" + str(counter) + " length=" + str(length) + "]"
+
+
+func _surround_sentence_with_ptag(sentence: String) -> String:
+	return _tag_p_start + sentence + _tag_p_end
+
 
 ### Logique principale pour afficher le texte avec fading
 ### Le texte s'afficeh par chaque incrément de counter_fading.
 ### Chaque incrément se fait tous les _time_between_increment (_timer_text) secondes.
 func display_text() -> void:
-	# _counter_fading += 1
+	var nb_sentences: int = len(INTRODUCTION_SCRIPT[_paragraph_index])
 
-	var nb_sentences: int = len(LOREM_IPSUM[_array_counter])
+	# Si on est à la dernière phrase du paragraphe, on passe au suivant
+	if _sentence_index == nb_sentences:
+		_paragraph_index += 1
 
-	if _sentence_counter == nb_sentences:
-		_array_counter += 1
-		if _array_counter == len(LOREM_IPSUM):
+		# Si c'était le dernier, on stop
+		if _paragraph_index == len(INTRODUCTION_SCRIPT):
 			_timer_text.stop()
 			_is_display_active = false
 			return
 
-		_sentence_counter = 0
+		_sentence_index = 0
 
-	var current_array = LOREM_IPSUM[_array_counter]
-	_max_counter_fading = 100 + len(current_array[_sentence_counter])
+	var current_paragraph = INTRODUCTION_SCRIPT[_paragraph_index]
+	_max_counter_fading = 100 + len(current_paragraph[_sentence_index])
 
 	if _counter_fading < _max_counter_fading:
 		var tag_fading_start = _generate_tag_fading_start(_counter_fading, _length_fading)
 
 		# On laisse afficher les phrases précédentes, elles ne sont plus affectées par le fade
-		if _sentence_counter > 0:
-			_label_text.text = _tag_p_start + current_array[0] + _tag_p_end
-			for i in range(1, _sentence_counter):
-				_label_text.text += _tag_p_start + current_array[1] + _tag_p_end
+		if _sentence_index > 0:
+			_label_text.text = _surround_sentence_with_ptag(current_paragraph[0])
+			for i in range(1, _sentence_index):
+				_label_text.text += _surround_sentence_with_ptag(current_paragraph[1])
 		else:
 			_label_text.text = ""
 
 		# on ajoute, avec fading, la phrase courante
-		_label_text.text += (
-			_tag_p_start
-			+ tag_fading_start
-			+ current_array[_sentence_counter]
-			+ _tag_fading_end
-			+ _tag_p_end
-		)
+		_label_text.text += (_surround_sentence_with_ptag(
+			tag_fading_start + current_paragraph[_sentence_index] + _tag_fading_end
+		))
 
 	elif _counter_fading == _max_counter_fading:
-		_sentence_counter += 1
+		_sentence_index += 1
 		_counter_fading = _starting_counter
