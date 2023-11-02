@@ -69,6 +69,9 @@ var player_state: ActionState
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+var _acceleration: float = 7
+var _angular_acceleration: float = 8
+
 @onready var animation_player: AnimationPlayer = $Pivot/dwarf_with_sword_animations/AnimationPlayer
 
 @onready var audio_sword_sound_1: AudioStreamPlayer3D = $Audio/Sword_Sound_1
@@ -98,10 +101,10 @@ func death() -> void:
 
 
 func _ready() -> void:
-	platform_floor_layers = 2^3
+	platform_floor_layers = 2 ^ 3
 	_play_animation(AnimationNames.IDLE)
 	player_state = ActionState.NOTHING
-	position = Vector3(0.0,0.0,0.0)
+	position = Vector3(0.0, 0.0, 0.0)
 	set_physics_process(false)
 
 
@@ -137,7 +140,7 @@ func _physics_process(delta: float) -> void:
 	if player_state != ActionState.NOTHING:
 		return
 
-	move_if_input_requested()
+	move_if_input_requested(delta)
 
 
 ## Lance une aniation d'attaque : SIMPLE_ATTACK_1, SIMPLE_ATTACK_2, SLASH_HORIZONTALLY
@@ -176,12 +179,13 @@ func attack() -> void:
 ## Fais appel à $Pivot.look_at() et move_and_slide()
 ## Mets à jours l'animation avec : IDLE / WALK / RUN
 ## Pour faire des smooths rotations : https://www.youtube.com/watch?v=5adTaWiCWvM&ab_channel=JohnnyRouddro
-func move_if_input_requested() -> void:
+func move_if_input_requested(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	player_state = ActionState.NOTHING
 	var input_dir := Input.get_vector("left", "right", "foward", "back")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var local_velocity = Vector3.ZERO
 
 	if direction:
 		var speed = walk_speed
@@ -191,19 +195,26 @@ func move_if_input_requested() -> void:
 			speed = run_speed
 			animation = AnimationNames.RUN_FORWARD_SWORD
 
-		velocity.x = direction.x * speed
-		velocity.z = direction.z * speed
+		local_velocity.x = direction.x * speed
+		local_velocity.z = direction.z * speed
 
 		_play_animation(animation, 0.9)
 
-		$Pivot.look_at(position + direction, Vector3.UP, true)
+		# $Pivot.look_at(position + direction, Vector3.UP, true)
+		# Smoothness
+		$Pivot.rotation.y = lerp_angle(
+			$Pivot.rotation.y, atan2(direction.x, direction.z), delta * _angular_acceleration
+		)
 	else:
-		velocity.x = move_toward(velocity.x, 0, walk_speed)
-		velocity.z = move_toward(velocity.z, 0, walk_speed)
+		local_velocity.x = 0  #  move_toward(velocity.x, 0, walk_speed)
+		local_velocity.z = 0  #  move_toward(velocity.z, 0, walk_speed)
 
 		if animation_player.current_animation != DICT_ANIMATIONS[AnimationNames.IDLE]:
 			# print("playing IDLE")
 			_play_animation(AnimationNames.IDLE)
+
+	# Smoothness
+	velocity = lerp(velocity, local_velocity, delta * _acceleration)
 
 	move_and_slide()
 	if position.y < -5.0:
