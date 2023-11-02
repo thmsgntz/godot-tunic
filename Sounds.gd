@@ -37,10 +37,12 @@ func _process(_delta: float) -> void:
 
 
 func start_music_starting_screen():
+	stream_audio_music.bus = "Music_Intro"
 	_start_music(music_starting_screen)
 
 
 func start_music_level_one():
+	stream_audio_music.bus = "Music_level_One"
 	_start_music(sound_dark_ambiance)
 
 

@@ -29,8 +29,6 @@ func _process(_delta: float) -> void:
 
 func load_level_1() -> void:
 	_game_state = GameState.LEVEL_ONE
-	_user_interface_start_screen.hide_ui()
-
 
 	_sound_music.start_music_level_one()
 	_level_1 = _preload_level_one.instantiate()
@@ -62,10 +60,6 @@ func player_is_dead():
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if event.is_action_pressed("spawn_zombie"):
-		if _game_state == GameState.LEVEL_ONE:
-			_level_1.start_zombie()
-
 	if event.is_action_pressed("black_screen"):
 		_user_interface_end_game.start_black_screen_fading()
 
@@ -75,9 +69,11 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_sound_music.transition_starting_screen_to_intro()
 			_introduction.active_text()
 			_game_state = GameState.INTRO
+
 		elif _game_state == GameState.INTRO:
 			_introduction.hide_ui()
 			load_level_1()
+
 		elif _game_state == GameState.GAME_OVER:
 			get_tree().reload_current_scene()
 

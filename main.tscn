@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://2t7v68cgmcsi"]
+[gd_scene load_steps=13 format=3 uid="uid://2t7v68cgmcsi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_djwls"]
 [ext_resource type="PackedScene" uid="uid://d0h3mto0h7tn3" path="res://player.tscn" id="3_wxgjr"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://UserInterface.gd" id="6_ruvl5"]
 [ext_resource type="Script" path="res://Sounds.gd" id="7_ol5yb"]
 [ext_resource type="AudioStream" uid="uid://dnvtaxsyu1gx8" path="res://sounds/transitions/big-impact-7054-retouched.mp3" id="7_rj772"]
+[ext_resource type="AudioStream" uid="uid://bia8vqk7xt08s" path="res://sounds/music/dark_atmosphere.mp3" id="8_3ya73"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_jgoge"]
 font_size = 40
@@ -152,9 +153,11 @@ scroll_active = false
 script = ExtResource("7_ol5yb")
 
 [node name="Music" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("8_3ya73")
+bus = &"Music_Intro"
 
 [node name="Effects" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("7_rj772")
-bus = &"Transition"
+bus = &"Transition_Intro"
 
 [node name="Timer" type="Timer" parent="Sounds"]

@@ -90,7 +90,7 @@ func take_damage(_damage_taken: float) -> void:
 
 func death() -> void:
 	player_state = ActionState.DEAD
-	set_process(false)
+	# set_physics_process(false)
 	get_node("CollisionShape3D").set_deferred("disabled", true)
 
 	get_node("Pivot/HurtBox3DPlayer/CollisionShape3D").set_deferred("disabled", true)
@@ -98,8 +98,11 @@ func death() -> void:
 
 
 func _ready() -> void:
+	platform_floor_layers = 2^3
 	_play_animation(AnimationNames.IDLE)
 	player_state = ActionState.NOTHING
+	position = Vector3(0.0,0.0,0.0)
+	set_physics_process(false)
 
 
 ## Logique dans l'ordre :
@@ -109,6 +112,7 @@ func _ready() -> void:
 ## - Si player_state == Attack: return. Sinon on move si demandé.
 func _physics_process(delta: float) -> void:
 	if player_state == ActionState.DEAD:
+		move_and_slide()
 		return
 
 	# Add the gravity.
@@ -160,17 +164,18 @@ func attack() -> void:
 		if offset_animation > 0.5 and offset_animation < 0.7:
 			animation_to_play = attack_animations[(index_attack + 1) % len(attack_animations)]
 			# animation_to_play = AnimationNames.SIMPLE_ATTACK_2
-			play_sound(audio_sword_sound_1)
+			# play_sound(audio_sword_sound_1)
 			_play_animation(animation_to_play, 0.2, 1.5)
 
 	elif player_state != ActionState.ATTACK:
-		play_sound(audio_sword_sound_1)
+		# play_sound(audio_sword_sound_1)
 		_play_animation(animation_to_play, 0.0, 1.5)
 
 
 ## Déplace le personnage selon les inputs.
 ## Fais appel à $Pivot.look_at() et move_and_slide()
 ## Mets à jours l'animation avec : IDLE / WALK / RUN
+## Pour faire des smooths rotations : https://www.youtube.com/watch?v=5adTaWiCWvM&ab_channel=JohnnyRouddro
 func move_if_input_requested() -> void:
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -189,7 +194,7 @@ func move_if_input_requested() -> void:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
 
-		_play_animation(animation)
+		_play_animation(animation, 0.9)
 
 		$Pivot.look_at(position + direction, Vector3.UP, true)
 	else:
@@ -201,6 +206,10 @@ func move_if_input_requested() -> void:
 			_play_animation(AnimationNames.IDLE)
 
 	move_and_slide()
+	if position.y < -5.0:
+		print("Death")
+		play_sound(audio_death)
+		death()
 
 
 func _play_animation(
@@ -225,3 +234,7 @@ func get_collision_info() -> Array:
 	)
 
 	return [hurt_mask, hurt_layer, hit_mask, hit_layer]
+
+
+func activate():
+	set_physics_process(true)

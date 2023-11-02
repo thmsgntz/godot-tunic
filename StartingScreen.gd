@@ -12,7 +12,6 @@ const LIST_SPLASH_SCREEN: Array = [
 	preload("res://splash_screens/splash_screen_7.jpg")
 ]
 
-@onready var _label_starting_game: Label = $LabelStartingGame
 @onready var _background_image: TextureRect = $BackGround_Image
 
 # Called when the node enters the scene tree for the first time.

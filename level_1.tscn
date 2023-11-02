@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://dybnd28rn4l2e"]
+[gd_scene load_steps=14 format=3 uid="uid://dybnd28rn4l2e"]
 
 [ext_resource type="Script" path="res://level_1.gd" id="1_102kk"]
 [ext_resource type="Texture2D" uid="uid://dj0d1ayfqcp2o" path="res://materials/FoliageGrass-B.png" id="1_p3qyy"]
 [ext_resource type="Texture2D" uid="uid://bb6uy7lvxosaq" path="res://materials/SurfaceStone-B.png" id="2_t5ojv"]
 [ext_resource type="Script" path="res://level_one_sound.gd" id="4_ipged"]
+[ext_resource type="AudioStream" uid="uid://bher1x1i3xfoc" path="res://sounds/transitions/creepy-transition-retouche.mp3" id="5_ixt1t"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_2nf3f"]
 radius = 15.0
@@ -62,7 +63,6 @@ metadata/_edit_lock_ = true
 [node name="Ground" type="StaticBody3D" parent="Arena"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 collision_layer = 4
-collision_mask = 0
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
@@ -139,3 +139,33 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0126629, -0.0208912, 0.023
 script = ExtResource("4_ipged")
 
 [node name="Effects" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("5_ixt1t")
+bus = &"Transition_Level_1"
+
+[node name="Zombie_Markers" type="Node" parent="."]
+
+[node name="spawn_1" type="Marker3D" parent="Zombie_Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+
+[node name="spawn_2" type="Marker3D" parent="Zombie_Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
+
+[node name="spawn_3" type="Marker3D" parent="Zombie_Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+
+[node name="spawn_4" type="Marker3D" parent="Zombie_Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 0)
+
+[node name="spawn_5" type="Marker3D" parent="Zombie_Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 8)
+
+[node name="spawn_6" type="Marker3D" parent="Zombie_Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -8)
+
+[node name="spawn_7" type="Marker3D" parent="Zombie_Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 8)
+
+[node name="spawn_8" type="Marker3D" parent="Zombie_Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -8)
+
+[node name="Timer" type="Timer" parent="."]
