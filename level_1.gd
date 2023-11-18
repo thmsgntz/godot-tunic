@@ -27,6 +27,7 @@ var _nb_seconds_between_waves: int = 4
 func _ready() -> void:
 	_timer.start(1.0)
 	_timer.timeout.connect(_prepare_next_wave)
+	zombie_scene.get_class()
 
 # Initialise le level avec la position du joueur
 # La ref du joueur est passée pour le suivi de caméra

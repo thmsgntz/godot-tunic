@@ -73,8 +73,9 @@ func call_on_after(node: Object, funcon:String, time:int) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if event.is_action_pressed("black_screen"):
-		_user_interface_end_game.start_black_screen_fading()
+	if event.is_action_pressed("quit"):
+		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+		get_tree().quit(0)
 
 	if event.is_action_pressed("space_key"):
 		if _game_state == GameState.STARTING:
@@ -84,8 +85,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_game_state = GameState.INTRO
 
 		elif _game_state == GameState.INTRO:
-			_introduction.hide_ui()
 			load_level_1()
+			_introduction.hide_ui()
 			_game_state = GameState.LEVEL_ONE
 
 		elif _game_state == GameState.GAME_OVER or _game_state == GameState.END_GAME:
