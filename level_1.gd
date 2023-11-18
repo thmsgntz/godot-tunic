@@ -2,13 +2,14 @@ extends Node
 
 signal one_zombie_dead
 signal last_zombie_dead
+signal level_over
 
 var zombie_scene: PackedScene = preload("res://zombie.tscn")
 
 var _player: CharacterBody3D
 var _number_of_zombie_alive: int = 0
 var _wave_index: int = 0
-var _nb_seconds_between_waves: int = 2
+var _nb_seconds_between_waves: int = 4
 
 @onready var camera_marker: Marker3D = $CameraMarker
 @onready var _zombie_markers: Array[Marker3D] = [
@@ -54,13 +55,16 @@ func move_camera(position: Vector3) -> void:
 
 
 ## Spawn a zombie, connect its signal and update number_of_zombie_alive
-func spawn_zombie(position_vec3: Vector3 = Vector3.ZERO):
+func spawn_zombie(position_vec3: Vector3 = Vector3.ZERO, speed_modifier: int=1, pv: int=10):
 	var zombie: Animated3DCharacter = zombie_scene.instantiate()
 
 	zombie.initialize(_player)
 	zombie.zombie_death.connect(decrease_zombie_count)
 
 	zombie.position = position_vec3
+
+	zombie.set_speed(speed_modifier)
+	zombie.set_pv(pv)
 
 	add_child(zombie)
 	_number_of_zombie_alive += 1
@@ -82,12 +86,12 @@ func _prepare_next_wave() -> void:
 		_timer.stop()
 
 	if _number_of_zombie_alive > 0:
-		print("Prepare_next_wave appelée alors qu'il reste des zombies !")
+		printerr("Prepare_next_wave appelée alors qu'il reste des zombies !")
 		return
 
 	# cleanup and sound
-	get_tree().call_group("zombies", "despawn")
 	await (get_tree().create_timer(_nb_seconds_between_waves).timeout)
+	get_tree().call_group("zombies", "despawn")
 	$Sounds.play_level_transition_effect()
 
 	_wave_index += 1
@@ -102,17 +106,33 @@ func _start_wave(wave_ind: int) -> void:
 			_wave_two()
 		3:
 			_wave_three()
+		4:
+			end_of_level()
 		_:
 			print("GAME DONE")
 
 
 func _wave_one() -> void:
-	spawn_zombie(_zombie_markers[0].position)
-	spawn_zombie(_zombie_markers[1].position)
-	spawn_zombie(_zombie_markers[2].position)
+	spawn_zombie(_zombie_markers[0].position, 1, 3)
+	spawn_zombie(_zombie_markers[1].position, 1, 3)
+	spawn_zombie(_zombie_markers[2].position, 1, 3)
 
 func _wave_two() -> void:
-	spawn_zombie(_zombie_markers[3].position)
+	spawn_zombie(_zombie_markers[0].position, 1, 3)
+	spawn_zombie(_zombie_markers[1].position, 1, 3)
+	spawn_zombie(_zombie_markers[2].position, 1, 3)
+	spawn_zombie(_zombie_markers[3].position, 2)
+	spawn_zombie(_zombie_markers[4].position, 2)
 
 func _wave_three() -> void:
-	spawn_zombie(_zombie_markers[4].position)
+	spawn_zombie(_zombie_markers[7].position, 2)
+	spawn_zombie(_zombie_markers[1].position, 2)
+	spawn_zombie(_zombie_markers[2].position, 2)
+	spawn_zombie(_zombie_markers[3].position, 2)
+	spawn_zombie(_zombie_markers[4].position, 2)
+	spawn_zombie(_zombie_markers[5].position, 4)
+	spawn_zombie(_zombie_markers[6].position, 4)
+
+
+func end_of_level() -> void:
+	level_over.emit()

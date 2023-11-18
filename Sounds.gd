@@ -13,7 +13,7 @@ var _is_music_opening: bool = false
 @onready var music_starting_screen: Resource = preload(
 	PATH_RESOURCE_MUSIC + "1-Dark Fantasy Studio- Ancient gods.mp3"
 )
-@onready var music_intro: Resource = preload(
+@onready var music_outro: Resource = preload(
 	PATH_RESOURCE_MUSIC + "10-Dark Fantasy Studio- Creatures of the night.mp3"
 )
 
@@ -46,8 +46,9 @@ func start_music_level_one():
 	_start_music(sound_dark_ambiance)
 
 
-func start_music_intro():
-	_start_music(music_intro)
+func start_music_end_game():
+	stream_audio_music.bus = "Music_Intro"
+	_start_music(music_outro)
 
 
 func _start_music(resource_file: Resource):

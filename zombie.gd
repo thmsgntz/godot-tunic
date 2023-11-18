@@ -25,6 +25,8 @@ var barre_de_vie = 10
 var is_dead: bool = false
 var is_navigation_map_ready: bool = false
 
+var speed_modifier: float = 1.0
+
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var target_node: CharacterBody3D
 @onready
@@ -70,6 +72,7 @@ func _ready():
 	zombie_state = ActionState.NOTHING
 
 	timer_growling.timeout.connect(play_sound_growling)
+	timer_attack.timeout.connect(attack)
 
 	# Make sure to not await during _ready.
 	call_deferred("actor_setup")
@@ -88,6 +91,15 @@ func initialize(target_node_to_follow: CharacterBody3D) -> void:
 	target_node = target_node_to_follow
 	call_deferred("actor_setup")
 	zombie_state = ActionState.NOTHING
+
+
+
+func set_speed(modifier: int) -> void:
+	speed_modifier = modifier
+
+
+func set_pv(modifier: int) -> void:
+	barre_de_vie = modifier
 
 
 ## Logique du zombie
@@ -112,7 +124,7 @@ func _physics_process(_delta):
 
 	# si at range pour attaquer
 	if navigation_agent.is_navigation_finished():
-		attack()
+		prepare_timer_attack()
 		return
 
 	move_with_navigation()
@@ -126,10 +138,10 @@ func move_with_navigation() -> void:
 	var new_velocity: Vector3 = next_path_position - current_agent_position
 
 	if new_velocity:
-		_play_animation(AnimationNames.WALK, 1.0)
+		_play_animation(AnimationNames.WALK, 1.0, 1.0 * speed_modifier)
 
 		new_velocity = new_velocity.normalized()
-		new_velocity = new_velocity * movement_speed
+		new_velocity = new_velocity * (movement_speed * speed_modifier)
 
 		look_at(next_path_position, Vector3.UP, true)
 
@@ -146,17 +158,22 @@ func is_attacking() -> bool:
 
 
 ## Joue l'animation d'attaque
-func attack() -> void:
+func prepare_timer_attack() -> void:
+	var wait_time = min(1.0, WAIT_TIME_ATTACK / speed_modifier)
+
 	if timer_attack.is_stopped() and zombie_state == ActionState.NOTHING:
-		timer_attack.start(WAIT_TIME_ATTACK)
+		timer_attack.start(wait_time)
 		_play_animation(AnimationNames.IDLE, 1.0)
 
-	elif timer_attack.time_left < (WAIT_TIME_ATTACK - WAIT_BEFORE_ATTACK):
-		_play_animation(AnimationNames.PUNCH_1, 1.0)
-		timer_attack.stop()
-		zombie_state = ActionState.ATTACK
-
 	return
+
+func attack() -> void:
+	if is_dead:
+		return
+
+	_play_animation(AnimationNames.PUNCH_1, 1.0, 1.0 * max(1, speed_modifier/2))
+	timer_attack.stop()
+	zombie_state = ActionState.ATTACK
 
 
 ## Joue l'animation
@@ -190,6 +207,7 @@ func update_target_position():
 func dead():
 	is_dead = true
 	timer_growling.stop()
+	timer_attack.stop()
 
 	collision_shape.set_deferred("disabled", true)
 	collision_hurtbox.set_deferred("disabled", true)

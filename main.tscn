@@ -1,11 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://2t7v68cgmcsi"]
+[gd_scene load_steps=14 format=3 uid="uid://2t7v68cgmcsi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_djwls"]
+[ext_resource type="Script" path="res://GameOver.gd" id="3_83fb6"]
 [ext_resource type="PackedScene" uid="uid://d0h3mto0h7tn3" path="res://player.tscn" id="3_wxgjr"]
 [ext_resource type="Script" path="res://StartingScreen.gd" id="4_cdgta"]
 [ext_resource type="Texture2D" uid="uid://btn1wk1ysqdey" path="res://splash_screens/splash_screen_1.jpg" id="5_ergee"]
 [ext_resource type="Script" path="res://Introduction.gd" id="6_qdc7s"]
-[ext_resource type="Script" path="res://UserInterface.gd" id="6_ruvl5"]
+[ext_resource type="Script" path="res://custom_nodes/FadingRect.gd" id="7_i0m4v"]
 [ext_resource type="Script" path="res://Sounds.gd" id="7_ol5yb"]
 [ext_resource type="AudioStream" uid="uid://dnvtaxsyu1gx8" path="res://sounds/transitions/big-impact-7054-retouched.mp3" id="7_rj772"]
 [ext_resource type="AudioStream" uid="uid://bia8vqk7xt08s" path="res://sounds/music/dark_atmosphere.mp3" id="8_3ya73"]
@@ -24,7 +25,6 @@ script = ExtResource("1_djwls")
 
 [node name="Player" parent="." instance=ExtResource("3_wxgjr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00470591, -0.00884628, 0.01261)
-health = 1
 
 [node name="UIs" type="Control" parent="."]
 layout_mode = 3
@@ -32,15 +32,15 @@ anchors_preset = 0
 offset_right = 1600.0
 offset_bottom = 1200.0
 
-[node name="EndGame" type="Control" parent="UIs"]
+[node name="GameOver" type="Control" parent="UIs"]
 visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1600.0
 offset_bottom = 1200.0
-script = ExtResource("6_ruvl5")
+script = ExtResource("3_83fb6")
 
-[node name="RetryButton" type="ColorRect" parent="UIs/EndGame"]
+[node name="RetryButton" type="ColorRect" parent="UIs/GameOver"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -50,11 +50,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="BlackScreenTimer" type="Timer" parent="UIs/EndGame/RetryButton"]
+[node name="BlackScreenTimer" type="Timer" parent="UIs/GameOver/RetryButton"]
 wait_time = 5.0
 one_shot = true
 
-[node name="LabelRetry" type="Label" parent="UIs/EndGame"]
+[node name="LabelRetry" type="Label" parent="UIs/GameOver"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -128,6 +128,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="FadingRect" type="ColorRect" parent="UIs/Introduction"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("7_i0m4v")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="UIs/Introduction"]
 layout_mode = 1

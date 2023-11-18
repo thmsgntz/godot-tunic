@@ -36,7 +36,7 @@ func _process(_delta: float) -> void:
             mesh_to_blink.set_surface_override_material(0, null)
         else:
             if toggle_mat:
-                mesh.albedo_color = Color.DARK_ORANGE
+                mesh.albedo_color = Color.WEB_MAROON
             else:
                 mesh.albedo_color = Color.BLACK
             toggle_mat = not toggle_mat

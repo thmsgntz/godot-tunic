@@ -93,6 +93,7 @@ func take_damage(_damage_taken: float) -> void:
 
 func death() -> void:
 	player_state = ActionState.DEAD
+	velocity = Vector3.ZERO
 	# set_physics_process(false)
 	get_node("CollisionShape3D").set_deferred("disabled", true)
 

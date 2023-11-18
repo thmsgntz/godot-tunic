@@ -4,7 +4,7 @@ extends Control
 @export_range(1.0, 10.0) var _fading_to_black = 5.0
 
 var _is_screen_fading_to_black: bool = false
-var _label_tool_tip: String = """
+var _label_player_dead: String = """
 Game Over
 
 {score} zombie{plural} killed
@@ -46,4 +46,4 @@ func _format_label(score: int) -> String:
 	if score > 1:
 		plural = "s"
 
-	return _label_tool_tip.format({"score": score, "plural": plural})
+	return _label_player_dead.format({"score": score, "plural": plural})

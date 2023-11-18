@@ -6,6 +6,21 @@ const INTRODUCTION_SCRIPT: Array = [
 		"Il est téléporté dans une arène mystérieuse entouré de morts-vivants vengeurs.",
 	],
 	["Le destin du royaume repose sur lui."],
+	["<Press Space> to continue."],
+]
+
+const END_SCRIPT: Array = [
+	[
+		"Après plusieurs heures de combat, l'atmosphère s'est apaisée.",
+		"Gui Second, par sa bravoure, a lavé les péchés causés par son père."
+	],
+	["Cependant.."],
+	[
+		"Est-il réellement libre, ou le fardeau de son héritage persiste-t-il dans l'ombre ?",
+	],
+	[
+		"The End.\n\n<Press Space>",
+	],
 ]
 
 # Number of charactarer faded
@@ -22,6 +37,7 @@ var _sentence_index = 0
 var _tag_fading_end = "[/fade]"
 var _tag_p_start = "[p align=center]"
 var _tag_p_end = "[/p]"
+var _text_to_display = null
 
 @onready var _label_text: RichTextLabel = $RichTextLabel
 @onready var _timer_text: Timer = $RichTextLabel/Timer
@@ -47,12 +63,26 @@ func _process(_delta: float) -> void:
 
 
 ### Active le noeud, affiche l'UI et commence le fading du texte.
-func active_text() -> void:
-	_is_display_active = true
-	self.visible = true
-	_timer_text.start(_time_between_increment)
-	_label_text.text = ""
+func start_text_intoduction() -> void:
+	$ColorRect.visible = true
+	_text_to_display = INTRODUCTION_SCRIPT
+	_start_config(0.1)
 
+### Active le noeud, affiche l'UI et commence le fading du texte.
+func start_text_end_game() -> void:
+	$ColorRect.visible = false
+	$FadingRect.start_black_screen_fading()
+	_text_to_display = END_SCRIPT
+
+	_start_config(5)
+
+
+func _start_config(wait_time: float):
+	self.visible = true
+	_label_text.text = ""
+	await (get_tree().create_timer(wait_time).timeout)
+	_is_display_active = true
+	_timer_text.start(_time_between_increment)
 	_counter_fading = _starting_counter
 
 	_paragraph_index = 0
@@ -61,6 +91,7 @@ func active_text() -> void:
 
 func hide_ui() -> void:
 	self.visible = false
+	_is_display_active = false
 	_timer_text.stop()
 	_label_text.text = ""
 
@@ -77,21 +108,21 @@ func _surround_sentence_with_ptag(sentence: String) -> String:
 ### Le texte s'afficeh par chaque incrément de counter_fading.
 ### Chaque incrément se fait tous les _time_between_increment (_timer_text) secondes.
 func display_text() -> void:
-	var nb_sentences: int = len(INTRODUCTION_SCRIPT[_paragraph_index])
+	var nb_sentences: int = len(_text_to_display[_paragraph_index])
 
 	# Si on est à la dernière phrase du paragraphe, on passe au suivant
 	if _sentence_index == nb_sentences:
 		_paragraph_index += 1
 
 		# Si c'était le dernier, on stop
-		if _paragraph_index == len(INTRODUCTION_SCRIPT):
+		if _paragraph_index == len(_text_to_display):
 			_timer_text.stop()
 			_is_display_active = false
 			return
 
 		_sentence_index = 0
 
-	var current_paragraph = INTRODUCTION_SCRIPT[_paragraph_index]
+	var current_paragraph = _text_to_display[_paragraph_index]
 	_max_counter_fading = 100 + len(current_paragraph[_sentence_index])
 
 	if _counter_fading < _max_counter_fading:
